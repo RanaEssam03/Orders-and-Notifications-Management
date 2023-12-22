@@ -17,7 +17,10 @@ public class UserServicesImpl implements UserServices {
     public User verifyUser(Credentials credentials) throws GeneralException {
         if(credentials.getUsername().equals("") || credentials.getPassword().equals(""))
             throw new GeneralException("400","Invalid Credentials");
-        return userRepository.getUser(credentials);
+        User user = userRepository.getUser(credentials);
+        if(user == null)
+            throw new GeneralException("404","User Not Found");
+        return user;
 
     }
 }

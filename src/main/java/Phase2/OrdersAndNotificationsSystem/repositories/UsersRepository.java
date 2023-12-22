@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface UsersRepository {
     ArrayList<User> getAllUsers();
-    User getUser(Credentials credentials) throws GeneralException;
+    User getUser(Credentials credentials) ;
     void addUser(User user);
     void updateUser(User user);
     void deleteUser(String username);

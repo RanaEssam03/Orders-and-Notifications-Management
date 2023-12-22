@@ -25,14 +25,14 @@ public class UserRepositoryImpl implements UsersRepository {
     }
 
     @Override
-    public User getUser(Credentials credentials) throws GeneralException {
+    public User getUser(Credentials credentials)  {
         for (User user : users) {
             if (user.getUsername().equals(credentials.getUsername()) && user.getPassword().equals(credentials.getPassword())) {
                 return user;
             }
         }
-        throw new GeneralException("404","Invalid Credentials");
-
+        System.out.println("Invalid Credentials");
+       return null;
     }
 
     @Override
