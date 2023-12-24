@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Message {
-    int id;
+    Integer id;
     String content;
     String contact;
 

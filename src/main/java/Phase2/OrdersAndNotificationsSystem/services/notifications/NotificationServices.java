@@ -1,6 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
-import Phase2.OrdersAndNotificationsSystem.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.Message;
 import Phase2.OrdersAndNotificationsSystem.models.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
