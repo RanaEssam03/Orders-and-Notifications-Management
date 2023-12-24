@@ -19,6 +19,7 @@ public class User {
         this.address = address;
         this.walletBalance = walletBalance;
     }
+    public User(){}
 
 
 }

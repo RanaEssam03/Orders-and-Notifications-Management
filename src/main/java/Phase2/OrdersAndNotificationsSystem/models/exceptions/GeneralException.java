@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.exceptions;
+package Phase2.OrdersAndNotificationsSystem.models.exceptions;
 
 import lombok.Getter;
 

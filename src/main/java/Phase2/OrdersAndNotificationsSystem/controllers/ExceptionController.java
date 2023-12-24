@@ -1,6 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
 
-import Phase2.OrdersAndNotificationsSystem.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
