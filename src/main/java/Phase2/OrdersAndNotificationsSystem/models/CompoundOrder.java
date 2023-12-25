@@ -10,7 +10,6 @@ public class CompoundOrder extends Order{
         double totalPrice = 0.0;
         for (Order order : orders){
             double price = (order.calculateTotalFee()) - (30) + (double)30/orders.size();
-            order.setPrice(price);
             totalPrice += price;
         }
         return totalPrice;

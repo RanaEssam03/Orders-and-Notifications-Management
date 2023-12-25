@@ -12,6 +12,6 @@ public abstract class Order {
     String status;
     String date;
     Double price;
-//    abstract Double calculateShipmentFee();
+    ArrayList<Product> products = new ArrayList<>();
     public abstract Double calculateTotalFee();
 }

@@ -1,20 +1,20 @@
 package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
+
 import Phase2.OrdersAndNotificationsSystem.models.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
-
+import java.util.ArrayList;
 @Repository
 public class OrderRepoImpl implements OrderRepo {
+    private static int ids = 0;
     ArrayList<Order> orders = new ArrayList<>();
-    static int id = 0;
     @Override
     public Order addOrder(Order order) {
-        order.setId(id++);
-        order.calculateTotalFee();
+        order.setId(++ids);
+        order.setPrice(order.calculateTotalFee());
         orders.add(order);
         return order;
     }
