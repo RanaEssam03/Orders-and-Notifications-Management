@@ -18,6 +18,7 @@ public class ProductsController {
     @Autowired
     ProductServices productService;
 
+
     @GetMapping("/all")
     public ArrayList<Product> getAllProducts() throws GeneralException {
         return productService.getAllProducts();

@@ -21,7 +21,7 @@ public class CompoundOrderService implements OrderServices {
             throw new GeneralException("400", "Invalid order");
         }
         else{
-            return orderRepo.addOrder(compoundOrder);
+            return  orderRepo.addOrder(compoundOrder);
         }
     }
 

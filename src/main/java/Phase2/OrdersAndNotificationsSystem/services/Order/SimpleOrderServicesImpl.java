@@ -18,11 +18,11 @@ public class SimpleOrderServicesImpl implements OrderServices{
     @Override
     @PostMapping("/make-order")
     public Order addOrder(Order order) throws GeneralException {
-        SimpleOrder simpleOrder = (SimpleOrder) order;
+//        SimpleOrder simpleOrder = (SimpleOrder) order;
         if(order == null)
             throw new GeneralException("400", "Invalid order");
         else
-            return orderRepo.addOrder(simpleOrder);
+            return orderRepo.addOrder(order);
     }
 
     @Override
