@@ -5,12 +5,13 @@ import lombok.Data;
 import java.util.ArrayList;
 
 @Data
-public class Order {
-    String id;
-    ArrayList<Product> products;
+public abstract class Order {
+    Integer id;
     Account account;
     Address address;
     String status;
-    Double totalPrice;
     String date;
+    Double price;
+//    abstract Double calculateShipmentFee();
+    public abstract Double calculateTotalFee();
 }
