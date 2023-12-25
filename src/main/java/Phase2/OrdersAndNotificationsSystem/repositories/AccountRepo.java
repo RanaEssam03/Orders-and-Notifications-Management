@@ -11,4 +11,6 @@ public interface AccountRepo {
     public void addUser(Account user);
     public void updateUser(Account user);
     public void deleteUser(Account user);
+
+    public Account getUserByUsername(String username);
 }

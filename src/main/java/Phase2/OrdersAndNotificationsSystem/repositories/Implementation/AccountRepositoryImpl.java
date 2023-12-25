@@ -50,4 +50,14 @@ public class AccountRepositoryImpl implements AccountRepo {
     public void deleteUser(Account user) {
         accounts.remove(user);
     }
+
+    @Override
+    public Account getUserByUsername(String username) {
+        for (Account user : accounts) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

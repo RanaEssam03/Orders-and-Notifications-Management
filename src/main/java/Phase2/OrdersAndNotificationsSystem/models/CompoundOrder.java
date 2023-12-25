@@ -10,8 +10,12 @@ public class CompoundOrder extends Order{
 
     @Override
     public Double calculateTotalFee() {
-
         double totalPrice = 0.0;
+
+        for (Product product : products){
+            totalPrice += product.getPrice();
+        }
+
         for (Order order : orders){
             double price = (order.calculateTotalFee()) - (30) + (double)30/orders.size();
             totalPrice += price;

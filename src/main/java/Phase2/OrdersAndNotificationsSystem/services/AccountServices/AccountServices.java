@@ -9,4 +9,6 @@ public interface AccountServices {
 
    public Account verifyUser(Credentials credentials) throws GeneralException;
    public Account Registers(Account account)throws GeneralException;
+
+    public boolean updateBalance(String username, Double amount) throws GeneralException;
 }

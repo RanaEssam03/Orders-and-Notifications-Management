@@ -18,7 +18,6 @@ public class SimpleOrderServicesImpl implements OrderServices{
     @Override
     @PostMapping("/make-order")
     public Order addOrder(Order order) throws GeneralException {
-//        SimpleOrder simpleOrder = (SimpleOrder) order;
         if(order == null)
             throw new GeneralException("400", "Invalid order");
         else
@@ -39,6 +38,6 @@ public class SimpleOrderServicesImpl implements OrderServices{
         if (order.isPresent())
             return order;
         else
-            throw new GeneralException("401", "Invalid order id");
+            throw new GeneralException("1", "Invalid order id");
     }
 }
