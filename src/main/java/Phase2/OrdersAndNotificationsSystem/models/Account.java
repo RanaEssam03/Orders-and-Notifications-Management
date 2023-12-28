@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Account  {
 
+
     @Schema(example = "nourmuhammad")
     private String username;
     @Schema(example = "12345$")
