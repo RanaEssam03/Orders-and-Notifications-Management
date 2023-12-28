@@ -42,7 +42,7 @@ public class OrderController {
         SimpleOrder simpleOrder = new SimpleOrder();
         simpleOrder.setAccount(userService.getUserByUsername(username));
         simpleOrder.setProducts(productServices.getProductsByID(order.getProductsIDs()));
-        return new OrderResponse(orderServices.addOrder(simpleOrder, username).getPrice());
+        return new OrderResponse(orderServices.addOrder(simpleOrder).getPrice());
     }
 
     @PostMapping("/make-compound-order")
@@ -52,7 +52,7 @@ public class OrderController {
         }
         String username = jwtTokenUtil.getUsernameFromToken(authHeader.substring(7));
        CompoundOrder compoundOrder = new CompoundOrder();
-       compoundOrder.setProducts(productServices.getProductsByID(order.getProducts()));
+       compoundOrder.setProducts(productServices.getProductsByID(order.getProductsIDs()));
        compoundOrder.setAccount(userService.getUserByUsername(username));
        for (String key : order.getOtherOrders().keySet()) {
            SimpleOrder simpleOrder = new SimpleOrder();
@@ -60,7 +60,7 @@ public class OrderController {
            simpleOrder.setAccount(userService.getUserByUsername(key));
            compoundOrder.getOrders().add(simpleOrder);
        }
-        return new OrderResponse( orderServices.addOrder(compoundOrder, username).getPrice());
+        return new OrderResponse( orderServices.addOrder(compoundOrder).getPrice());
     }
 
     @GetMapping("/get-order/{id}")

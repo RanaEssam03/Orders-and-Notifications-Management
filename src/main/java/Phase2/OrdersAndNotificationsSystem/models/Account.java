@@ -7,7 +7,6 @@ import lombok.Data;
 public class Account  {
 
     private String username;
-    @JsonIgnore // to make sure that the password is not returned in the response
     private String password;
     private String email;
     private String phoneNumber;

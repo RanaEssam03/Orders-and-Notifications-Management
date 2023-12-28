@@ -54,7 +54,7 @@ public class ProductServicesImp implements ProductServices {
     @Override
     public ArrayList<Product> getProductsByID(ArrayList<Integer> IDs) throws GeneralException {
         ArrayList<Product> products = new ArrayList<>();
-        if(IDs == null)
+        if(IDs == null || IDs.isEmpty())
             throw new GeneralException(HttpStatus.NOT_FOUND, "No products are found" );
 
         for (Integer id : IDs){

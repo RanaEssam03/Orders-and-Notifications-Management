@@ -36,7 +36,7 @@ public class AccountController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Account account) throws GeneralException {
         userServices.Registers(account);
-        return new ResponseEntity<>("Account is  added successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Account is  added successfully", HttpStatus.CREATED);
     }
 
     @PutMapping("/update-balance")

@@ -13,10 +13,8 @@ import java.util.Map;
 public class CompoundOrderRequest {
 
 
-
-
     Map<String,OrderRequest > otherOrders = new HashMap();
 
-    ArrayList<Integer> products = new ArrayList<>();
+    ArrayList<Integer> productsIDs = new ArrayList<>();
 
 }
