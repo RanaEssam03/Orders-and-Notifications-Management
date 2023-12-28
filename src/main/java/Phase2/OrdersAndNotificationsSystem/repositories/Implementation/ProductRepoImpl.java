@@ -8,9 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.products;
+
 @Repository
 public class ProductRepoImpl implements ProductRepo {
-    ArrayList<Product> products = new ArrayList<Product>();
     static int productsCnt = 0;
 
 

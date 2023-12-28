@@ -5,14 +5,14 @@ import Phase2.OrdersAndNotificationsSystem.models.Address;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.accounts;
 
 @Repository
 
 public class AccountRepositoryImpl implements AccountRepo {
 
-    ArrayList<Account> accounts = new ArrayList<>();
+
     public AccountRepositoryImpl() {
         accounts.add(new Account("ranaessam", "123456", "ranaessam03@gmail.com", "01145303111",new Address("Cairo","Mokatam","dd",42) , 1000.00));
         accounts.add(new Account("nooreyad", "12345$", "nooreyad1@gmail.com", "01146992561",new Address("Cairo","Mokatam","dd",2) , 10000.00));
