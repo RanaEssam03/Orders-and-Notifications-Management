@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface OrderServices {
 
 
-    Order addOrder(Order order) throws GeneralException;
+    Order addOrder(Order order, String username) throws GeneralException;
 
     boolean removeOrder(Order order) throws GeneralException;
     Optional<Order> getOrder(int orderID) throws GeneralException;

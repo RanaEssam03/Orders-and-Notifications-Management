@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ProductRepo {
 
-    Optional<Product> getProduct(String serialNumber);
+    Optional<Product> getProduct(Integer serialNumber);
 
     void addProduct(Product product);
     boolean updateProduct(Product product);

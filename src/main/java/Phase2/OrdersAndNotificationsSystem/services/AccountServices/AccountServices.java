@@ -11,4 +11,6 @@ public interface AccountServices {
    public Account Registers(Account account)throws GeneralException;
 
     public boolean updateBalance(String username, Double amount) throws GeneralException;
+
+    public  Account getUserByUsername(String username) throws GeneralException;
 }

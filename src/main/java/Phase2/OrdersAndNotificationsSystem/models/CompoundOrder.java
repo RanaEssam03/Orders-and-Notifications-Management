@@ -1,12 +1,16 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
+import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.ProductRepoImpl;
+import Phase2.OrdersAndNotificationsSystem.repositories.ProductRepo;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
+
 @Data
 public class CompoundOrder extends Order{
-    ArrayList<SimpleOrder> orders ;
+    ArrayList<SimpleOrder> orders  = new ArrayList<>();
 
     @Override
     public Double calculateTotalFee() {

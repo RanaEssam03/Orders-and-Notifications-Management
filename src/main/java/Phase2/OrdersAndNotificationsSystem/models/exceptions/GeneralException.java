@@ -1,13 +1,15 @@
 package Phase2.OrdersAndNotificationsSystem.models.exceptions;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class GeneralException extends Exception {
-    public record ErrorData(String code, String msg) {}
+    public record ErrorData(int status, String msg) {}
 
     private ErrorData errorData;
-    public GeneralException(String code, String msg) {
-        this.errorData = new ErrorData(code, msg);
+    public GeneralException(HttpStatus status, String msg) {
+        this.errorData = new ErrorData( status.value()
+                , msg);
     }
 }

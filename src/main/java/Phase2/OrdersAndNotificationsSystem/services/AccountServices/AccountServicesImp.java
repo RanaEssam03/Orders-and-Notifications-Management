@@ -6,6 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ public class AccountServicesImp implements AccountServices {
     @Override
     public Account verifyUser(Credentials credentials) throws GeneralException {
         if (credentials.getUsername().equals("") || credentials.getPassword().equals(""))
-            throw new GeneralException("400", "Invalid Credentials");
+            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid Credentials");
         Account user = userRepository.getUser(credentials);
         if (user == null)
-            throw new GeneralException("404", "User Not Found");
+            throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
         return user;
     }
 
@@ -30,9 +31,9 @@ public class AccountServicesImp implements AccountServices {
         ArrayList<Account> userAccounts = userRepository.getAllUsers();
         for (Account account : userAccounts) {
             if(a.getEmail().equals(account.getEmail()))
-                throw new GeneralException("404","Email already exist");
+                throw new GeneralException(HttpStatus.NOT_ACCEPTABLE,"Email already exist");
             else if (a.getUsername().equals(account.getUsername())){
-                throw new GeneralException("404","Username already exist");
+                throw new GeneralException(HttpStatus.NOT_ACCEPTABLE,"Username already exist");
             }
         }
         userRepository.addUser(a);
@@ -41,7 +42,7 @@ public class AccountServicesImp implements AccountServices {
 
     public boolean updateBalance(String username, Double amount) throws GeneralException {
         if (amount < 0)
-            throw new GeneralException("400", "Invalid amount");
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid amount");
         Account user = userRepository.getUserByUsername(username);
         if(user == null){ // TODO
             return false;
@@ -53,5 +54,14 @@ public class AccountServicesImp implements AccountServices {
         userRepository.updateUser(user);
         return true;
     }
+
+    @Override
+    public Account getUserByUsername(String username) throws GeneralException {
+        Account user = userRepository.getUserByUsername(username);
+        if (user == null)
+            throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
+        return user;
+    }
+
 }
 

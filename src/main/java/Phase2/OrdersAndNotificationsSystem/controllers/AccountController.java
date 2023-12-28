@@ -6,7 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.BalanceUpdateRequest;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 import Phase2.OrdersAndNotificationsSystem.services.AccountServices.AccountServices;
-import org.apache.catalina.connector.Response;
+import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,19 @@ public class AccountController {
     @Autowired
     private AccountServices userServices;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @GetMapping("/check")
-    public Account login(@RequestBody Credentials credentials) throws GeneralException {
-        return userServices.verifyUser(credentials);
+    public String login(@RequestBody Credentials credentials) throws GeneralException {
+
+        Account account = userServices.verifyUser(credentials);
+        if( userServices.verifyUser(credentials) != null) {
+            String token = jwtTokenUtil.generateToken(account.getUsername());
+            return token;
+        }
+           else
+            throw new GeneralException(HttpStatus.NOT_FOUND,"Invalid Credentials");
     }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Account account) throws GeneralException {
