@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequestMapping("api/user")
 @RestController
 public class AccountController {
@@ -46,5 +49,15 @@ public class AccountController {
             );
 
         return new ResponseEntity<>("Account is updated successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/get-balance")
+    public ResponseEntity<?> getBalance( @RequestHeader("Authorization") String authHeader) throws GeneralException {
+        String token = authHeader.substring(7);
+        String tokenUsername = jwtTokenUtil.getUsernameFromToken(token);
+       Account account = userServices.getUserByUsername(tokenUsername);
+        Map<String, Object> response = new HashMap<>();
+        response.put("CurrentBalance", account.getWalletBalance());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

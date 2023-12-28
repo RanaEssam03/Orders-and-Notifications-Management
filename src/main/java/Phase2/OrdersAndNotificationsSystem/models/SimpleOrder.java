@@ -1,6 +1,8 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 
@@ -9,11 +11,13 @@ import java.util.ArrayList;
 public class SimpleOrder extends Order{
 
     @Override
-    public Double calculateTotalFee() {
+    public Double calculateTotalFee() throws GeneralException {
         Double totalPrice = 0.0;
         for (Product product : products){
             totalPrice += product.getPrice();
         }
-        return (totalPrice + 30);
+        this.setPrice(totalPrice);
+        return (totalPrice);
+
     }
 }

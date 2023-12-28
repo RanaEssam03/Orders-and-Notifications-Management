@@ -13,4 +13,5 @@ public interface AccountServices {
     public boolean updateBalance(String username, Double amount) throws GeneralException;
 
     public  Account getUserByUsername(String username) throws GeneralException;
+
 }

@@ -1,9 +1,11 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.ProductRepoImpl;
 import Phase2.OrdersAndNotificationsSystem.repositories.ProductRepo;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 
@@ -13,15 +15,27 @@ public class CompoundOrder extends Order{
     ArrayList<SimpleOrder> orders  = new ArrayList<>();
 
     @Override
-    public Double calculateTotalFee() {
+    public Double calculateTotalFee() throws GeneralException {
         double totalPrice = 0.0;
 
         for (Product product : products){
             totalPrice += product.getPrice();
         }
+        totalPrice += ((double)30/(orders.size()+1));
+        this.setPrice(totalPrice);
+
+        if(totalPrice > this.getAccount().getWalletBalance()){
+            String message = "Not enough balance for " + this.getAccount().getUsername();
+            throw new GeneralException(HttpStatus.BAD_REQUEST, message);
+        }
 
         for (Order order : orders){
-            double price = (order.calculateTotalFee()) - (30) + (double)30/orders.size();
+            double price = (order.calculateTotalFee()) + ((double)30/(orders.size()+1));
+            order.setPrice(price);
+            if(price > order.getAccount().getWalletBalance()){
+                String message = "Not enough balance for " + order.getAccount().getUsername();
+                throw new GeneralException(HttpStatus.BAD_REQUEST, message);
+            }
             totalPrice += price;
         }
         return totalPrice;
