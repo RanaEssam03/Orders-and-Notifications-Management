@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.categories;
+
 @Repository
 public class InventoryImpl implements InventoryRepo {
-  ArrayList<Category> categories = new ArrayList<>();
 
   InventoryImpl() {
 

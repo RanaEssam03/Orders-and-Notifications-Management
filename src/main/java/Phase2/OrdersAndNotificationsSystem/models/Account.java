@@ -7,13 +7,18 @@ import lombok.Data;
 @Data
 public class Account  {
 
-    @Schema(example = "ranaessam")
+
+    @Schema(example = "nourmuhammad")
     private String username;
-    @Schema(example = "123456")
+    @Schema(example = "12345$")
     private String password;
+    @Schema(example = "nourmuhammad835@gmail.com")
     private String email;
+    @Schema(example = "01114335538")
     private String phoneNumber;
+    // todo schema
     private Address address;
+    @Schema(example = "100.0")
     private double walletBalance;
 
 

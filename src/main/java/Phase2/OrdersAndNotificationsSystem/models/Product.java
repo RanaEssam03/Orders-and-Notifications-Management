@@ -1,4 +1,5 @@
 package Phase2.OrdersAndNotificationsSystem.models;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.Data;
 
@@ -6,15 +7,21 @@ import java.util.ArrayList;
 
 @Data
 public class Product {
+  @Schema(example = "12166237")
   Integer serialNumber; // ID
-    String name;
-    String vendor;
-    Double price;
-    Integer  productCount;
-    ArrayList<Category> categories = new ArrayList<>();
-    static int cnt = 0;
+  @Schema(example = "Laptop")
+  String name;
+  @Schema(example = "HP")
+  String vendor;
+  @Schema(example = "20000.0")
+  Double price;
+  @Schema(example = "5")
+  Integer  productCount;
+  ArrayList<Category> categories = new ArrayList<>();
+  @Schema(example = "5")
+  static int cnt = 0;
 
-    public Product(){
+  public Product(){
       serialNumber = cnt++;
     }
 

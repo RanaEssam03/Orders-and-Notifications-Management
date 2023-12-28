@@ -12,6 +12,7 @@ import java.util.Date;
 
 @Data
 public abstract class Order {
+    @Schema(example = "13")
     Integer id;
     Account account;
 

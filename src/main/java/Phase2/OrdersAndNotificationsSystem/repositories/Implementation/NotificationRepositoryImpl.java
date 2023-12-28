@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Queue;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.messagesQueue;
+
 @Repository
 public class NotificationRepositoryImpl implements NotificationsRepository {
-    ArrayList<Message> messagesQueue = new ArrayList<>();
+
     static int idCounter = 0;
     @Override
     public Message add(Message message) {
