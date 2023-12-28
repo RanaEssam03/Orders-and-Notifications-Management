@@ -7,10 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 import java.util.ArrayList;
+
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.orders;
+
 @Repository
 public class OrderRepoImpl implements OrderRepo {
     private static int ids = 0;
-    ArrayList<Order> orders = new ArrayList<>();
+
     @Override
     public Order addOrder(Order order) {
         order.setId(++ids);

@@ -7,37 +7,32 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.categories;
+
 @Repository
 public class InventoryImpl implements InventoryRepo {
-  ArrayList<Category> categories = new ArrayList<>();
-  static int id = 0;
+
   InventoryImpl() {
+
     Category category = new Category();
     category.setName("Electronics");
-    category.setId(id++);
     categories.add(category);
 
     category = new Category();
     category.setName("Clothing");
-    category.setId(id++);
     categories.add(category);
 
     category = new Category();
     category.setName("Furniture");
-    category.setId(id++);
     categories.add(category);
 
     category = new Category();
     category.setName("Grocery");
-    category.setId(id++);
     categories.add(category);
 
     category = new Category();
     category.setName("Books");
-    category.setId(id++);
     categories.add(category);
-
-
 
   }
 

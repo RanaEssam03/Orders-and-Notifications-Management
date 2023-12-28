@@ -3,11 +3,9 @@ package Phase2.OrdersAndNotificationsSystem.controllers;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
+import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -18,9 +16,14 @@ public class ProductsController {
     @Autowired
     ProductServices productService;
 
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
-    @GetMapping("/all")
-    public ArrayList<Product> getAllProducts() throws GeneralException {
+
+    @GetMapping("/get-all")
+    public ArrayList<Product> getAllProducts(@RequestHeader("Authorization") String authHeader ) throws GeneralException {
+
+         jwtTokenUtil.getUsernameFromToken(authHeader.substring(7));
         return productService.getAllProducts();
     }
 

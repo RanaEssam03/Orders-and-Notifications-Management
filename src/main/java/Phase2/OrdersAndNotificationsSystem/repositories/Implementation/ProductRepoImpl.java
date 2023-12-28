@@ -2,45 +2,44 @@ package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
 
 import Phase2.OrdersAndNotificationsSystem.models.Category;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
-import Phase2.OrdersAndNotificationsSystem.repositories.InventoryRepo;
 import Phase2.OrdersAndNotificationsSystem.repositories.ProductRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.products;
+
 @Repository
 public class ProductRepoImpl implements ProductRepo {
-    ArrayList<Product> products = new ArrayList<Product>();
+    static int productsCnt = 0;
 
 
     ProductRepoImpl(){
-        int id = 0;
         Category category = new Category();
         category.setName("Electronics");
-        category.setId(id++);
+
+
 
         Category category1 = new Category();
         category1.setName("Clothing");
-        category1.setId(id++);
+
 
         Category category2 = new Category();
         category2.setName("Furniture");
-        category2.setId(id++);
+
 
         Category category3 = new Category();
         category3.setName("Grocery");
-        category3.setId(id++);
+
 
        Category category4 = new Category();
         category4.setName("Books");
-        category4.setId(id++);
+
 
 
 
         Product product1 = new Product();
-            product1.setSerialNumber("1");
             product1.setName("product1");
             product1.setVendor("vendor1");
             product1.setPrice(100.0);
@@ -54,7 +53,6 @@ public class ProductRepoImpl implements ProductRepo {
             products.add(product1);
 
             Product product2 = new Product();
-            product2.setSerialNumber("2");
             product2.setName("product2");
             product2.setVendor("vendor2");
             product2.setPrice(200.0);
@@ -68,7 +66,6 @@ public class ProductRepoImpl implements ProductRepo {
             products.add(product2);
 
             Product product3 = new Product();
-            product3.setSerialNumber("3");
             product3.setName("product3");
             product3.setVendor("vendor3");
             product3.setPrice(300.0);
@@ -85,13 +82,13 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public Optional<Product> getProduct(String serialNumber) {
+    public Optional<Product> getProduct(Integer serialNumber) {
         for (Product product : products) {
-            if (product.getSerialNumber().equals(serialNumber)) {
+            if (product.getSerialNumber()== serialNumber) {
                 return Optional.of(product);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
 

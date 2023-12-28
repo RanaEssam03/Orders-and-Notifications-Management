@@ -9,4 +9,7 @@ import java.util.ArrayList;
 public interface ProductServices {
     ArrayList<Product> getAllProducts() throws GeneralException;
     ArrayList<Product> getProductsByCategory(Integer id) throws GeneralException;
+    ArrayList<Product> getProductsByID(ArrayList<Integer>IDs) throws GeneralException;
+
+
 }
