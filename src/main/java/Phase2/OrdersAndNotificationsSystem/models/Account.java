@@ -16,7 +16,7 @@ public class Account  {
     private String email;
     @Schema(example = "01114335538")
     private String phoneNumber;
-    // todo schema
+
     private Address address;
     @Schema(example = "100.0")
     private double walletBalance;

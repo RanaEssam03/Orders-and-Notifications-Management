@@ -5,13 +5,10 @@ import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
-import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.OrderRepoImpl;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
-import Phase2.OrdersAndNotificationsSystem.repositories.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,16 +58,26 @@ public class OrderServicesImpl implements OrderServices{
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
                 }
             }
-            //TODO check balance for compound order
+
             double totalFee = order.calculateTotalFee();
             if(order instanceof SimpleOrder){
                 if(totalFee + 30 > order.getAccount().getWalletBalance()){
                     String message = "Not enough balance for " + order.getAccount().getUsername();
                     throw new GeneralException(HttpStatus.BAD_REQUEST, message);
                 }
+                order.setPrice(totalFee + 30);
+
             }
-            double currBalance = order.getAccount().getWalletBalance();
-            order.getAccount().setWalletBalance(currBalance - totalFee);
+            order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() - order.getPrice());
+            if(order instanceof CompoundOrder){
+                checkValidCompoundOrder((CompoundOrder) order);
+                ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
+                for(Order currOrder : orders){
+                    currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice());
+                }
+            }
+
+
             return orderRepo.addOrder(order);
         }
     }
@@ -90,5 +97,21 @@ public class OrderServicesImpl implements OrderServices{
             return order;
         else
             throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
+    }
+
+    Boolean checkValidCompoundOrder(CompoundOrder compoundOrder) throws GeneralException {
+        ArrayList<SimpleOrder> orders = compoundOrder.getOrders();
+        for(SimpleOrder order : orders){
+            if(order.getAccount().getUsername() == compoundOrder.getAccount().getUsername()){
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
+            }
+        }
+        String temp = compoundOrder.getAccount().getAddress().getCity();
+        for(SimpleOrder order : orders){
+            if(order.getAccount().getAddress().getCity() != temp){
+                throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Not all orders are in the same city");
+            }
+        }
+        return true;
     }
 }

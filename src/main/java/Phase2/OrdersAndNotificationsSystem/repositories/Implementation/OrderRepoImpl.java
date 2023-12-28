@@ -18,7 +18,6 @@ public class OrderRepoImpl implements OrderRepo {
     @Override
     public Order addOrder(Order order) throws GeneralException {
         order.setId(++ids);
-        order.setPrice(order.calculateTotalFee());
         orders.add(order);
         return order;
     }

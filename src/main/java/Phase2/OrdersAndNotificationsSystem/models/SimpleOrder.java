@@ -16,6 +16,8 @@ public class SimpleOrder extends Order{
         for (Product product : products){
             totalPrice += product.getPrice();
         }
+        this.setPrice(totalPrice);
         return (totalPrice);
+
     }
 }

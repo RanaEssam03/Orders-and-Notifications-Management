@@ -10,11 +10,11 @@ import Phase2.OrdersAndNotificationsSystem.services.AccountServices.AccountServi
 import Phase2.OrdersAndNotificationsSystem.services.Order.OrderServices;
 import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
 import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -37,7 +37,7 @@ public class OrderController {
 
 
     @PostMapping("/make-order")
-    public OrderResponse makeOrder(@RequestBody OrderRequest order, @RequestHeader("Authorization") String authHeader) throws GeneralException {
+    public OrderResponse makeOrder(@RequestBody OrderRequest order, @RequestHeader("Authorization") String authHeader ) throws GeneralException {
         String username = jwtTokenUtil.getUsernameFromToken(authHeader.substring(7));
         SimpleOrder simpleOrder = new SimpleOrder();
         simpleOrder.setAccount(userService.getUserByUsername(username));
