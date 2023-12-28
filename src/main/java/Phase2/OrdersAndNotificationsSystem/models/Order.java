@@ -1,5 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -24,7 +25,7 @@ public abstract class Order {
     @Schema(example = "100.0")
     Double price;
     ArrayList<Product> products = new ArrayList<>();
-    public abstract Double calculateTotalFee();
+    public abstract Double calculateTotalFee() throws GeneralException;
 
     Order() {
         Date date = new Date();

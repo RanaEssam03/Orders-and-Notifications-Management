@@ -43,7 +43,7 @@ public class ProductRepoImpl implements ProductRepo {
             product1.setName("product1");
             product1.setVendor("vendor1");
             product1.setPrice(100.0);
-            product1.setProductCount(10);
+            product1.setProductCount(3);
 
             ArrayList<Category> categories1 = new ArrayList<>();
             categories1.add(category4);
@@ -56,7 +56,7 @@ public class ProductRepoImpl implements ProductRepo {
             product2.setName("product2");
             product2.setVendor("vendor2");
             product2.setPrice(200.0);
-            product2.setProductCount(20);
+            product2.setProductCount(2);
 
             ArrayList<Category> categories2 = new ArrayList<>();
             categories2.add(category);

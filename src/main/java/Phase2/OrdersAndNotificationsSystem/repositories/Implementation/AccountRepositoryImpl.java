@@ -14,10 +14,10 @@ public class AccountRepositoryImpl implements AccountRepo {
 
 
     public AccountRepositoryImpl() {
-        accounts.add(new Account("ranaessam", "123456", "ranaessam03@gmail.com", "01145303111",new Address("Cairo","Mokatam","dd",42) , 1000.00));
-        accounts.add(new Account("nooreyad", "12345$", "nooreyad1@gmail.com", "01146992561",new Address("Cairo","Mokatam","dd",2) , 10000.00));
-        accounts.add(new Account("nourmuhamed", "12#456", "nourmuhamed4@gmail.com", "01155500847",new Address("Cairo","Mokatam","dd",16) , 2000.00));
-        accounts.add(new Account("mariamhaitham", "1@3456", "mariamhaitham36@gmail.com", "01126134834",new Address("Cairo","Mokatam","dd",8) , 10000.50));
+        accounts.add(new Account("ranaessam", "12345$", "ranaessam@gmail.com", "01114335538",new Address("Cairo","Mokatam","dd",5) , 300.0));
+        accounts.add(new Account("nooreyad", "12345$", "nooreyad1@gmail.com", "01146992561",new Address("Cairo","Mokatam","dd",2) , 200.00));
+        accounts.add(new Account("nourmuhamed", "12#456", "nourmuhamed4@gmail.com", "01155500847",new Address("Cairo","Mokatam","dd",16) , 400.00));
+        accounts.add(new Account("mariamhaitham", "1@3456", "mariamhaitham36@gmail.com", "01126134834",new Address("Cairo","Mokatam","dd",8) , 500.50));
     }
 
 
