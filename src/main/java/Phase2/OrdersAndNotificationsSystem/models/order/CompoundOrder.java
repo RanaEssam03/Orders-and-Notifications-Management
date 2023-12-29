@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class CompoundOrder extends Order {
     ArrayList<Order> orders  = new ArrayList<>();
 
-    @Override
+    @Override // TODO
     public Double calculateTotalFee() throws GeneralException {
         double totalPrice = 0.0;
 
-        for (Product product : products){
-            totalPrice += product.getPrice();
-        }
+//        for (Product product : products){
+//            totalPrice += product.getPrice();
+//        }
         totalPrice += ((double)30/(orders.size()+1));
         this.setPrice(totalPrice);
 

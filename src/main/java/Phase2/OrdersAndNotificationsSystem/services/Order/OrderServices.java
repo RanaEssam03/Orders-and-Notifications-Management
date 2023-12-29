@@ -13,4 +13,8 @@ public interface OrderServices {
     boolean removeOrder(Order order) throws GeneralException;
     Optional<Order> getOrder(int orderID) throws GeneralException;
 
+    boolean confirmSimpleOrder(Order order) throws GeneralException;
+
+    Order confirmCompoundOrder(Order order) throws GeneralException;
+
 }

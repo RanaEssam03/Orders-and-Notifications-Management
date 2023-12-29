@@ -3,6 +3,8 @@ package Phase2.OrdersAndNotificationsSystem.services.Products;
 import Phase2.OrdersAndNotificationsSystem.models.Category;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.InventoryImpl;
 import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.ProductRepoImpl;
 import Phase2.OrdersAndNotificationsSystem.repositories.InventoryRepo;
@@ -12,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -69,4 +73,50 @@ public class ProductServicesImp implements ProductServices {
         }
         return products;
     }
+
+    @Override
+    public boolean reduceProductQuantity(Product product, Integer quantity) throws GeneralException {
+        if(product == null || quantity == null)
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid product or quantity");
+        else {
+            if (product.getProductCount() < quantity)
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid quantity");
+            else {
+                product.setProductCount(product.getProductCount() - quantity);
+                return productRepo.updateProduct(product);
+            }
+        }
+    }
+
+//    public boolean validProductCount(Order order) throws GeneralException {
+//        Map<Product, Integer> productCount = new HashMap<>();
+//        ArrayList<Product > products;
+//        if(order instanceof CompoundOrder){
+//            ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
+//            for(Order currOrder : orders){
+//                products = currOrder.getProducts();
+//                for (Product product : products) {
+//                    productCount.put(product, 0);
+//                }
+//                for(Product p :products){
+//                    productCount.put(p ,productCount.get(p) + 1);
+//                    if(productCount.get(p) > p.getProductCount()){
+//                        throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
+//                    }
+//                }
+//            }
+//        }
+//        products = order.getProducts();
+//        for (Product product : products) {
+//            productCount.put(product, 0);
+//        }
+//        for(Product p :products){
+//            productCount.put(p ,productCount.get(p) + 1);
+//            if(productCount.get(p) > p.getProductCount()){
+//                throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
+//            }
+//        }
+//        return true;
+//
+//    }
 }

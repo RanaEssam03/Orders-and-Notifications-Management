@@ -25,7 +25,6 @@ public abstract class Order {
     @Schema(example = "100.0")
     Double price;
 
-    ArrayList<Product> products = new ArrayList<>();
 
     public abstract Double calculateTotalFee() throws GeneralException;
 

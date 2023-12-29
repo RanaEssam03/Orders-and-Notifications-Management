@@ -48,6 +48,7 @@ public class AccountController {
            else
             throw new GeneralException(HttpStatus.NOT_FOUND,"Invalid Credentials");
     }
+
     @PostMapping("/register")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Account is  added successfully"),

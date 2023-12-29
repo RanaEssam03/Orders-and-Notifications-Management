@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class OrderResponse {
 
-    @Schema(example = "500.6")
-    Double total;
+    @Schema(example = "2")
+    Integer ID;
 
-    public OrderResponse(Double total) {
-        this.total = total;
+    public OrderResponse(Integer ID) {
+        this.ID = ID;
     }
 }

@@ -12,9 +12,7 @@ import java.util.Map;
 @Data
 public class CompoundOrderRequest {
 
-
-    Map<String,OrderRequest > otherOrders = new HashMap();
-
-    ArrayList<Integer> productsIDs = new ArrayList<>();
+    // This is the ID of the user who is making the order request
+    Map<String,Integer > orders = new HashMap();
 
 }

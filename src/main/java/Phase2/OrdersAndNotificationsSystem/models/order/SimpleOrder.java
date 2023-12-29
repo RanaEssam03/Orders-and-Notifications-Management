@@ -5,9 +5,13 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 
 @Data
 public class SimpleOrder extends Order {
+    ArrayList<Product> products = new ArrayList<>();
+
 
     @Override
     public Double calculateTotalFee() throws GeneralException {
