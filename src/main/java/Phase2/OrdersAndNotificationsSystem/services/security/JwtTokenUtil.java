@@ -2,7 +2,6 @@ package Phase2.OrdersAndNotificationsSystem.services.security;
 
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import io.jsonwebtoken.*;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
