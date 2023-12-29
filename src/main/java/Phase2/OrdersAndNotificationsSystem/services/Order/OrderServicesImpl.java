@@ -61,7 +61,7 @@ public class OrderServicesImpl implements OrderServices{
         Map<Product, Integer> productCount = new HashMap<>();
         ArrayList<Product > products;
         if(order instanceof CompoundOrder){
-            ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
+            ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
             for(Order currOrder : orders){
                 products = currOrder.getProducts();
                 for (Product product : products) {
@@ -98,7 +98,7 @@ public class OrderServicesImpl implements OrderServices{
         }
         order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() - order.getPrice());
         if(order instanceof CompoundOrder){
-            ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
+            ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
             for(Order currOrder : orders){
                 currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice());
             }
@@ -106,8 +106,8 @@ public class OrderServicesImpl implements OrderServices{
     }
 
     void checkValidCompoundOrder(CompoundOrder compoundOrder) throws GeneralException {
-        ArrayList<SimpleOrder> orders = compoundOrder.getOrders();
-        for(SimpleOrder order : orders){
+        ArrayList<Order> orders = compoundOrder.getOrders();
+        for(Order order : orders){
             if(order.getAccount().getUsername() == compoundOrder.getAccount().getUsername()){
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
             }
