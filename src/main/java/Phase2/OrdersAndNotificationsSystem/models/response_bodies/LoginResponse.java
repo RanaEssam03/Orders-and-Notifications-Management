@@ -1,13 +1,14 @@
 package Phase2.OrdersAndNotificationsSystem.models.response_bodies;
 
-public class LoginResponse {
-    String token;
-    String username;
-    String role;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
-    public LoginResponse(String token, String username, String role) {
+@Data
+public class LoginResponse {
+    @Schema(example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJub3VybXVoYW1tYWQiLCJleHAiOjE2MjIwNjUwNjYsImlhdCI6MTYyMjA2NDI2")
+    String token;
+
+    public LoginResponse(String token) {
         this.token = token;
-        this.username = username;
-        this.role = role;
     }
 }

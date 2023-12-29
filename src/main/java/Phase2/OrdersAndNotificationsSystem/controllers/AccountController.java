@@ -5,8 +5,11 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.BalanceUpdateRequest;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
+import Phase2.OrdersAndNotificationsSystem.models.response_bodies.LoginResponse;
 import Phase2.OrdersAndNotificationsSystem.services.AccountServices.AccountServices;
 import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +29,27 @@ public class AccountController {
     private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/check")
-    public String login(@RequestBody Credentials credentials) throws GeneralException {
+    public LoginResponse login(@RequestBody Credentials credentials) throws GeneralException {
 
         Account account = userServices.verifyUser(credentials);
         if( userServices.verifyUser(credentials) != null) {
             String token = jwtTokenUtil.generateToken(account.getUsername());
-            return token;
+            return new LoginResponse(token);
         }
            else
             throw new GeneralException(HttpStatus.NOT_FOUND,"Invalid Credentials");
     }
     @PostMapping("/register")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Account is  added successfully"),
+            @ApiResponse(responseCode = "406", description = "Username already exist"),
+            @ApiResponse(responseCode = "403", description = "Email already exist")
+
+
+    })
     public ResponseEntity<?> register(@RequestBody Account account) throws GeneralException {
         userServices.Registers(account);
+
         return new ResponseEntity<>("Account is  added successfully", HttpStatus.CREATED);
     }
 

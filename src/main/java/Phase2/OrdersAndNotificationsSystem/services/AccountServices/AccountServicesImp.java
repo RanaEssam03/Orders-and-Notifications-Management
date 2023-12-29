@@ -31,7 +31,7 @@ public class AccountServicesImp implements AccountServices {
         ArrayList<Account> userAccounts = userRepository.getAllUsers();
         for (Account account : userAccounts) {
             if(a.getEmail().equals(account.getEmail()))
-                throw new GeneralException(HttpStatus.NOT_ACCEPTABLE,"Email already exist");
+                throw new GeneralException(HttpStatus.FORBIDDEN,"Email already exist");
             else if (a.getUsername().equals(account.getUsername())){
                 throw new GeneralException(HttpStatus.NOT_ACCEPTABLE,"Username already exist");
             }
