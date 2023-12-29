@@ -1,10 +1,11 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class Message {
-    int id;
+    Integer id;
     String content;
     String contact;
 
