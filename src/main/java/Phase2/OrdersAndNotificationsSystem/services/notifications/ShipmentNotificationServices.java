@@ -1,24 +1,29 @@
 package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
+import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
 import lombok.Data;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
-public class ShipmentNotificationServices {
+@Service
+public class ShipmentNotificationServices extends NotificationServices{
     static private Integer id;
     Map<String, String> content = new HashMap<>();
-    String accountUsername;
-    ArrayList<String> productNames = new ArrayList<>();
     void initializeMap(){
-        content.put("English", "Dear %s, your shipment of %s is confirmed. thanks for using our online store :)");
-        content.put("German", "");
-        content.put("French", "");
+        content.put("English", "Dear %s, your shipment of the order #%s is confirmed, keep track of your order.");
+        content.put("German", "Sehr geehrter %s, Ihr Versand der Bestellung #%s wurde bestätigt. Behalten Sie den Überblick über Ihre Bestellung.");
+        content.put("French", "Cher %s, votre expédition de la commande n°%s est confirmée, gardez une trace de votre commande.");
     }
-    public ShipmentNotificationServices(String contact) {
+    public ShipmentNotificationServices(SMSChannel messageChannel, NotificationsRepository notificationsRepository) {
+        super(messageChannel, notificationsRepository);
         initializeMap();
-        this.accountUsername = contact;
+    }
+    @Override
+    protected String createMessage(Order order) {
+        return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());
     }
 }

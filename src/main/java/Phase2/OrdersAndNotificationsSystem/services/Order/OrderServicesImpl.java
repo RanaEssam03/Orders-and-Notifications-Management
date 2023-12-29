@@ -52,8 +52,9 @@ public class OrderServicesImpl implements OrderServices {
             enoughBalance(order);
         }
         order.setStatus("Pending");
-        placementNotificationServices.sendMessage(order);
-        return orderRepo.addOrder(order);
+        Order order1 = orderRepo.addOrder(order);
+        placementNotificationServices.sendMessage(order1);
+        return order1;
     }
 
 
