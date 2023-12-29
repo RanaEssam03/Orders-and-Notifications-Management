@@ -20,10 +20,12 @@ public class AccountServicesImp implements AccountServices {
     @Override
     public Account verifyUser(Credentials credentials) throws GeneralException {
         if (credentials.getUsername().equals("") || credentials.getPassword().equals(""))
-            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid Credentials");
-        Account user = userRepository.getUser(credentials);
+            throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Invalid Credentials");
+        Account user = userRepository.getUserByUsername(credentials.getUsername());
         if (user == null)
             throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
+        if (!user.getPassword().equals(credentials.getPassword()))
+            throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Invalid Credentials");
         return user;
     }
 

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 // run the server and go to http://localhost:8080/swagger-ui.html
+// to see the generated documentation for the API
+// you can also go to http://localhost:8080/v3/api-docs to see the raw documentation
 
 @RequestMapping("api/user")
 @RestController
@@ -30,12 +32,18 @@ public class AccountController {
     private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/check")
-    public LoginResponse login(@RequestBody Credentials credentials) throws GeneralException {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login is successful" ),
+            @ApiResponse(responseCode = "406", description = "Invalid Credentials", content = @io.swagger.v3.oas.annotations.media.Content),
+            @ApiResponse(responseCode = "404", description = "User Not Found", content = @io.swagger.v3.oas.annotations.media.Content)
+
+    })
+    public ResponseEntity<LoginResponse> login(@RequestBody Credentials credentials) throws GeneralException {
 
         Account account = userServices.verifyUser(credentials);
         if( userServices.verifyUser(credentials) != null) {
             String token = jwtTokenUtil.generateToken(account.getUsername());
-            return new LoginResponse(token);
+            return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
         }
            else
             throw new GeneralException(HttpStatus.NOT_FOUND,"Invalid Credentials");
