@@ -17,7 +17,6 @@ public abstract class Order {
     @Schema(example = "13")
     Integer id;
     Account account;
-
     @Schema(example = "Pending")
     String status;
     @Schema(example = "2021/05/05")

@@ -21,12 +21,10 @@ public class CompoundOrder extends Order {
 //        }
         totalPrice += ((double)30/(orders.size()+1));
         this.setPrice(totalPrice);
-
         if(totalPrice > this.getAccount().getWalletBalance()){
             String message = "Not enough balance for " + this.getAccount().getUsername();
             throw new GeneralException(HttpStatus.BAD_REQUEST, message);
         }
-
         for (Order order : orders){
             double price = (order.calculateTotalFee()) + ((double)30/(orders.size()+1));
             order.setPrice(price);

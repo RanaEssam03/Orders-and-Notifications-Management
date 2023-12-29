@@ -6,8 +6,6 @@ import lombok.Data;
 
 @Data
 public class Account  {
-
-
     @Schema(example = "nourmuhammad")
     private String username;
     @Schema(example = "12345$")
@@ -20,16 +18,16 @@ public class Account  {
     private Address address;
     @Schema(example = "100.0")
     private double walletBalance;
+    String chosenLanguage;
 
-
-
-    public Account(String username, String password, String email, String phoneNumber, Address address, double walletBalance) {
+    public Account(String username, String password, String email, String phoneNumber, Address address, double walletBalance, String language) {
         this.username=username;
         this.password=password;
         this.email=email;
         this.phoneNumber=phoneNumber;
         this.address=address;
         this.walletBalance=walletBalance;
+        this.chosenLanguage = language;
     }
 
 

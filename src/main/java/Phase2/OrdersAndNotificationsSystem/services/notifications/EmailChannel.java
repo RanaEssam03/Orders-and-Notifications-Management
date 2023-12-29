@@ -1,10 +1,12 @@
 package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
-import Phase2.OrdersAndNotificationsSystem.models.Message;
+import Phase2.OrdersAndNotificationsSystem.models.Notification;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmailChannel implements MessageChannel{
     @Override
-    public void sendMessage(Message message) {
+    public void sendMessage(Notification notification) {
 
     }
 

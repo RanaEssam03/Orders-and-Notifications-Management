@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Data
 public class Credentials {
-
     @Schema(example = "ranaessam")
     private String username;
     @Schema(example = "123456")

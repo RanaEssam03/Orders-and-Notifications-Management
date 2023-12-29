@@ -8,6 +8,7 @@ import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
 import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class OrderServicesImpl implements OrderServices {
 
     @Autowired
     ProductServices productServices;
+
+    @Autowired
+    PlacementNotificationServices placementNotificationServices;
 
 
     /**
@@ -48,6 +52,7 @@ public class OrderServicesImpl implements OrderServices {
             enoughBalance(order);
         }
         order.setStatus("Pending");
+        placementNotificationServices.sendMessage(order);
         return orderRepo.addOrder(order);
     }
 

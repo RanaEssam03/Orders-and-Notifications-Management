@@ -1,17 +1,14 @@
 package Phase2.OrdersAndNotificationsSystem.repositories;
 
-import Phase2.OrdersAndNotificationsSystem.models.Message;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.MessageChannel;
-import org.springframework.stereotype.Repository;
+import Phase2.OrdersAndNotificationsSystem.models.Notification;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 
 public interface NotificationsRepository {
-    public Message add(Message message);
+    public Notification add(Notification notification);
 
-    public ArrayList<Message> getAll();
+    public ArrayList<Notification> getAll();
 
-    public boolean delete(Message message);
+    public boolean delete(Notification message);
 }

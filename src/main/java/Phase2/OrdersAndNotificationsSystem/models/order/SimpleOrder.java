@@ -21,6 +21,5 @@ public class SimpleOrder extends Order {
         }
         this.setPrice(totalPrice);
         return (totalPrice);
-
     }
 }
