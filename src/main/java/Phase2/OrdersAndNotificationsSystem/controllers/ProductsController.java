@@ -1,5 +1,4 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
-
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+// run the server and go to http://localhost:8080/swagger-ui.html
 
 @RequestMapping("/api/products")
 @RestController

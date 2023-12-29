@@ -1,6 +1,5 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.Data;
 
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
-package Phase2.OrdersAndNotificationsSystem.models;
+package Phase2.OrdersAndNotificationsSystem.models.order;
 
+import Phase2.OrdersAndNotificationsSystem.models.Account;
+import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;

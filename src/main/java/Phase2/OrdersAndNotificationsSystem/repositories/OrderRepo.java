@@ -1,6 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.repositories;
 
-import Phase2.OrdersAndNotificationsSystem.models.Order;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 
 import java.util.Optional;

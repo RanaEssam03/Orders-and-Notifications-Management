@@ -15,8 +15,5 @@ public class OrdersAndNotificationsSystemApplication {
     }
 
 }
-// Composite pattern
-// Template pattern
-// Documentation
 
 

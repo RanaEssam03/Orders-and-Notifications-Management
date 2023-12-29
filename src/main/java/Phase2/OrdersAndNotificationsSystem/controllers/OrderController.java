@@ -1,7 +1,7 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
-import Phase2.OrdersAndNotificationsSystem.models.CompoundOrder;
-import Phase2.OrdersAndNotificationsSystem.models.Order;
-import Phase2.OrdersAndNotificationsSystem.models.SimpleOrder;
+import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
+import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.CompoundOrderRequest;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.OrderRequest;
@@ -10,12 +10,13 @@ import Phase2.OrdersAndNotificationsSystem.services.AccountServices.AccountServi
 import Phase2.OrdersAndNotificationsSystem.services.Order.OrderServices;
 import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
 import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
-
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
+
+// run the server and go to http://localhost:8080/swagger-ui.html
 
 @RestController
 @RequestMapping("/api/order")
@@ -36,6 +37,7 @@ public class OrderController {
 
 
 
+    @ApiResponse(responseCode = "200", description = "Order is  added successfully and return the total price ")
     @PostMapping("/make-order")
     public OrderResponse makeOrder(@RequestBody OrderRequest order, @RequestHeader("Authorization") String authHeader ) throws GeneralException {
         String username = jwtTokenUtil.getUsernameFromToken(authHeader.substring(7));
@@ -45,6 +47,8 @@ public class OrderController {
         return new OrderResponse(orderServices.addOrder(simpleOrder).getPrice());
     }
 
+
+    @ApiResponse(responseCode = "200", description = "Order is  added successfully and return the total price of the person who made the order ")
     @PostMapping("/make-compound-order")
     public OrderResponse makeCompoundOrder(@RequestBody CompoundOrderRequest order ,@RequestHeader("Authorization") String authHeader) throws GeneralException {
         if(authHeader == null){

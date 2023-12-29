@@ -1,13 +1,11 @@
 package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
 
-import Phase2.OrdersAndNotificationsSystem.models.Order;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
-import java.util.ArrayList;
 
 import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.orders;
 

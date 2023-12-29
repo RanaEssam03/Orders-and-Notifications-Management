@@ -41,14 +41,8 @@ public class AccountServicesImp implements AccountServices {
     }
 
     public boolean updateBalance(String username, Double amount) throws GeneralException {
-        if (amount < 0)
-            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid amount");
+
         Account user = userRepository.getUserByUsername(username);
-        if(user == null){ // TODO
-            return false;
-        }
-//        if (user == null)
-//            throw new GeneralException("404", "User Not Found");
 
         user.setWalletBalance(user.getWalletBalance() + amount);
         userRepository.updateUser(user);

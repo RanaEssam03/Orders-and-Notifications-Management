@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+// run the server and go to http://localhost:8080/swagger-ui.html
 
 @RequestMapping("api/user")
 @RestController
@@ -45,7 +46,6 @@ public class AccountController {
             @ApiResponse(responseCode = "406", description = "Username already exist"),
             @ApiResponse(responseCode = "403", description = "Email already exist")
 
-
     })
     public ResponseEntity<?> register(@RequestBody Account account) throws GeneralException {
         userServices.Registers(account);
@@ -53,22 +53,39 @@ public class AccountController {
         return new ResponseEntity<>("Account is  added successfully", HttpStatus.CREATED);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Balance is  updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid amount"),
+            @ApiResponse(responseCode = "404", description = "User Not Found")
+
+    })
     @PutMapping("/update-balance")
-    public ResponseEntity<?> update(@RequestBody BalanceUpdateRequest request) throws GeneralException {
-        if(!userServices.updateBalance(request.getUsername(), request.getAmount()))
+    public ResponseEntity<?> update(@RequestBody BalanceUpdateRequest request, @RequestHeader("Authorization") String authHeader) throws GeneralException {
+        String token = authHeader.substring(7);
+        String tokenUsername = jwtTokenUtil.getUsernameFromToken(token);
+        Account account = userServices.getUserByUsername(tokenUsername);
+        if(account == null)
+            throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
+        if(request.getAmount() < 0)
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid amount");
+        if(!userServices.updateBalance(account.getUsername(), request.getAmount()))
             return new ResponseEntity<>("Failed to update balance", HttpStatus.BAD_REQUEST
             );
-
-        return new ResponseEntity<>("Account is updated successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Balance is updated successfully", HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Balance is  updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User Not Found")
+
+    })
     @GetMapping("/get-balance")
     public ResponseEntity<?> getBalance( @RequestHeader("Authorization") String authHeader) throws GeneralException {
         String token = authHeader.substring(7);
         String tokenUsername = jwtTokenUtil.getUsernameFromToken(token);
        Account account = userServices.getUserByUsername(tokenUsername);
         Map<String, Object> response = new HashMap<>();
-        response.put("CurrentBalance", account.getWalletBalance());
+        response.put("current_balance", account.getWalletBalance());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

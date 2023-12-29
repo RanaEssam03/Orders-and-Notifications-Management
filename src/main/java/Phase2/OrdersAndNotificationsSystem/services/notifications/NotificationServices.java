@@ -2,7 +2,7 @@ package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.Message;
-import Phase2.OrdersAndNotificationsSystem.models.Order;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,7 @@
-package Phase2.OrdersAndNotificationsSystem.models;
+package Phase2.OrdersAndNotificationsSystem.models.order;
+import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 
 
 @Data
-public class CompoundOrder extends Order{
+public class CompoundOrder extends Order {
     ArrayList<Order> orders  = new ArrayList<>();
 
     @Override

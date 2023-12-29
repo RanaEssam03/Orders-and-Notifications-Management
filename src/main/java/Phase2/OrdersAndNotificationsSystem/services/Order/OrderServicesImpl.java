@@ -1,8 +1,8 @@
 package Phase2.OrdersAndNotificationsSystem.services.Order;
-import Phase2.OrdersAndNotificationsSystem.models.CompoundOrder;
-import Phase2.OrdersAndNotificationsSystem.models.Order;
+import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
+import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
-import Phase2.OrdersAndNotificationsSystem.models.SimpleOrder;
+import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
