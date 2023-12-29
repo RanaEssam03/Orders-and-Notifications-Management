@@ -1,7 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.repositories;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
-import Phase2.OrdersAndNotificationsSystem.models.ShipmentNotificationServices;
 
 import java.util.ArrayList;
 

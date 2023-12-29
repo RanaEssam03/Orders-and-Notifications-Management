@@ -1,7 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
-import Phase2.OrdersAndNotificationsSystem.models.ShipmentNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
 import org.springframework.stereotype.Repository;
 

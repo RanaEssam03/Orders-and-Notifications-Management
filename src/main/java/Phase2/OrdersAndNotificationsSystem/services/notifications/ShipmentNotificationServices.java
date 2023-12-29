@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.models;
+package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
 import lombok.Data;
 
