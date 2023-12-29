@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.services.Order;
+package Phase2.OrdersAndNotificationsSystem.services.order;
 
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
@@ -7,8 +7,9 @@ import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
-import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
+import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.ShipmentNotificationServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class OrderServicesImpl implements OrderServices {
 
     @Autowired
     PlacementNotificationServices placementNotificationServices;
+
+    @Autowired
+    ShipmentNotificationServices shipmentNotificationServices;
 
 
     /**
@@ -92,6 +96,8 @@ public class OrderServicesImpl implements OrderServices {
                 order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() - order.getPrice() + 30);
                 order.setPrice(order.getPrice() + 30);
                 order.setStatus("Confirmed");
+                shipmentNotificationServices.sendMessage(order);
+
             }
         }
         return true;
@@ -117,6 +123,10 @@ public class OrderServicesImpl implements OrderServices {
                   currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice() + shippingFee);
                   currOrder.setStatus("Confirmed");
                   currOrder.setPrice(currOrder.getPrice() + shippingFee);
+
+                  for (Order o: orders) {
+                      shipmentNotificationServices.sendMessage(o);
+                  }
               }
 
           }

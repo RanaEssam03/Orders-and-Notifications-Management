@@ -1,7 +1,6 @@
-package Phase2.OrdersAndNotificationsSystem.services.AccountServices;
+package Phase2.OrdersAndNotificationsSystem.services.accountServices;
 
 import Phase2.OrdersAndNotificationsSystem.models.Account;
-import Phase2.OrdersAndNotificationsSystem.models.Address;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;

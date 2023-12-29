@@ -1,30 +1,31 @@
 package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.Queue;
-
-import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.messagesQueue;
 
 @Service
 public class SMSChannel implements MessageChannel{
 
 
-
+    @Autowired
+    NotificationsRepository notificationRepo ;
 
     @Override
-    public void sendMessage(Notification notification){
+    public void sendMessage(Notification notification) throws GeneralException {
         notification.setMessageChannel(this);
         String mobile = notification.getOrder().getAccount().getPhoneNumber();
         if(verifyContact(notification.getOrder().getAccount().getPhoneNumber())){
-            System.out.println("SMS sent to " + mobile+ " with message: " + notification.getContent());
+            notificationRepo.add(notification);
+           return;
         }
         else{
-            System.out.println("Invalid contact number, failed to send SMS!");
+            throw new GeneralException( HttpStatus.CONFLICT, "Invalid contact number, failed to send SMS!");
         }
 
-        messagesQueue.add(notification);
     }
 
     @Override

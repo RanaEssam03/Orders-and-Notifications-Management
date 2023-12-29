@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
+package Phase2.OrdersAndNotificationsSystem.repositories.implementation;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
@@ -33,5 +33,10 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
             }
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<Notification> getAllNotifications() {
+        return messagesQueue;
     }
 }

@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
+package Phase2.OrdersAndNotificationsSystem.repositories.implementation;
 
 import Phase2.OrdersAndNotificationsSystem.models.Account;
 import Phase2.OrdersAndNotificationsSystem.models.Address;
@@ -14,10 +14,10 @@ public class AccountRepositoryImpl implements AccountRepo {
 
 
     public AccountRepositoryImpl() {
-        accounts.add(new Account("ranaessam", "12345$", "ranaessam@gmail.com", "01114335538",new Address("Mokattam","Cairo","dd",5) , 300.0, "English"));
-        accounts.add(new Account("nooreyad", "12345$", "nooreyad1@gmail.com", "01146992561",new Address("maadi","Cairo","dd",2) , 200.00, "English") );
-        accounts.add(new Account("nourmuhamed", "12#456", "nourmuhamed4@gmail.com", "01155500847",new Address("Dokki","Cairo","dd",16) , 400.00, "French"));
-        accounts.add(new Account("mariamhaitham", "1@3456", "mariamhaitham36@gmail.com", "01126134834",new Address("Mokattam","Cairo","dd",8) , 500.50, "German"));
+        accounts.add(new Account("ranaessam", "12345", "ranaessam@gmail.com", "01114335538",new Address("Mokattam","Cairo","dd",5) , 300.0, "English"));
+        accounts.add(new Account("nooreyad", "12345", "nooreyad1@gmail.com", "01146992561",new Address("maadi","Cairo","dd",2) , 4000.00, "English") );
+        accounts.add(new Account("nourmuhamed", "12345", "nourmuhamed4@gmail.com", "01155500847",new Address("Dokki","Cairo","dd",16) , 400.00, "French"));
+        accounts.add(new Account("mariamhaitham", "12345", "mariamhaitham36@gmail.com", "01126134834",new Address("Mokattam","Cairo","dd",8) , 500.50, "German"));
     }
 
 

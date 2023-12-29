@@ -1,21 +1,15 @@
-package Phase2.OrdersAndNotificationsSystem.services.Products;
+package Phase2.OrdersAndNotificationsSystem.services.products;
 
 import Phase2.OrdersAndNotificationsSystem.models.Category;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
-import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
-import Phase2.OrdersAndNotificationsSystem.models.order.Order;
-import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.InventoryImpl;
-import Phase2.OrdersAndNotificationsSystem.repositories.Implementation.ProductRepoImpl;
-import Phase2.OrdersAndNotificationsSystem.repositories.InventoryRepo;
+import Phase2.OrdersAndNotificationsSystem.repositories.implementation.InventoryImpl;
 import Phase2.OrdersAndNotificationsSystem.repositories.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

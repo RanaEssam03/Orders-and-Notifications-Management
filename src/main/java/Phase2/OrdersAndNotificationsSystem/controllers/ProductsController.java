@@ -1,7 +1,7 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
-import Phase2.OrdersAndNotificationsSystem.services.Products.ProductServices;
+import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
 import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

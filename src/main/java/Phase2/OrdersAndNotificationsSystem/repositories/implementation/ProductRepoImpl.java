@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.repositories.Implementation;
+package Phase2.OrdersAndNotificationsSystem.repositories.implementation;
 
 import Phase2.OrdersAndNotificationsSystem.models.Category;
 import Phase2.OrdersAndNotificationsSystem.models.Product;

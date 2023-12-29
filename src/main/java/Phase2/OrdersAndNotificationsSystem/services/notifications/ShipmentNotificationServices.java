@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Service
 public class ShipmentNotificationServices extends NotificationServices{
-    static private Integer id;
+
     Map<String, String> content = new HashMap<>();
     void initializeMap(){
         content.put("English", "Dear %s, your shipment of the order #%s is confirmed, keep track of your order.");
         content.put("German", "Sehr geehrter %s, Ihr Versand der Bestellung #%s wurde bestätigt. Behalten Sie den Überblick über Ihre Bestellung.");
         content.put("French", "Cher %s, votre expédition de la commande n°%s est confirmée, gardez une trace de votre commande.");
     }
-    public ShipmentNotificationServices(SMSChannel messageChannel, NotificationsRepository notificationsRepository) {
+    public ShipmentNotificationServices(EmailChannel messageChannel, NotificationsRepository notificationsRepository) {
         super(messageChannel, notificationsRepository);
         initializeMap();
     }

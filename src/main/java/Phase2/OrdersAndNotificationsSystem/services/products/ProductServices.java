@@ -1,9 +1,7 @@
-package Phase2.OrdersAndNotificationsSystem.services.Products;
+package Phase2.OrdersAndNotificationsSystem.services.products;
 
-import Phase2.OrdersAndNotificationsSystem.models.Category;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
-import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 
 import java.util.ArrayList;
 

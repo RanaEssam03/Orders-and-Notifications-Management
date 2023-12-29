@@ -11,4 +11,5 @@ public interface NotificationsRepository {
     public ArrayList<Notification> getAll();
 
     public boolean delete(Notification message);
+    public ArrayList<Notification> getAllNotifications();
 }

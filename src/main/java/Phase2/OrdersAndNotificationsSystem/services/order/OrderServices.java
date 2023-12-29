@@ -1,4 +1,4 @@
-package Phase2.OrdersAndNotificationsSystem.services.Order;
+package Phase2.OrdersAndNotificationsSystem.services.order;
 
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
