@@ -28,58 +28,16 @@ public class OrderServicesImpl implements OrderServices{
     @Override
     public Order addOrder(Order order) throws GeneralException {
 
-        if(order == null)
+        if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
-            Map<Product, Integer> productCount = new HashMap<>();
-            ArrayList<Product > products;
-            if(order instanceof CompoundOrder){
-                ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
-                for(Order currOrder : orders){
-                    products = currOrder.getProducts();
-                    for (Product product : products) {
-                        productCount.put(product, 0);
-                    }
-                    for(Product p :products){
-                        productCount.put(p ,productCount.get(p) + 1);
-                        if(productCount.get(p) > p.getProductCount()){
-                            throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
-                        }
-                    }
-                }
-            }
-            products = order.getProducts();
-            for (Product product : products) {
-                 productCount.put(product, 0);
-            }
-            for(Product p :products){
-                productCount.put(p ,productCount.get(p) + 1);
-                if(productCount.get(p) > p.getProductCount()){
-                    throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
-                }
-            }
-
-            double totalFee = order.calculateTotalFee();
-            if(order instanceof SimpleOrder){
-                if(totalFee + 30 > order.getAccount().getWalletBalance()){
-                    String message = "Not enough balance for " + order.getAccount().getUsername();
-                    throw new GeneralException(HttpStatus.BAD_REQUEST, message);
-                }
-                order.setPrice(totalFee + 30);
-
-            }
-            order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() - order.getPrice());
             if(order instanceof CompoundOrder){
                 checkValidCompoundOrder((CompoundOrder) order);
-                ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
-                for(Order currOrder : orders){
-                    currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice());
-                }
             }
-
-
-            return orderRepo.addOrder(order);
+            validProductCount(order);
+            enoughBalance(order);
         }
+        return orderRepo.addOrder(order);
     }
 
     @Override
@@ -99,7 +57,55 @@ public class OrderServicesImpl implements OrderServices{
             throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
     }
 
-    Boolean checkValidCompoundOrder(CompoundOrder compoundOrder) throws GeneralException {
+    void validProductCount(Order order) throws GeneralException {
+        Map<Product, Integer> productCount = new HashMap<>();
+        ArrayList<Product > products;
+        if(order instanceof CompoundOrder){
+            ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
+            for(Order currOrder : orders){
+                products = currOrder.getProducts();
+                for (Product product : products) {
+                    productCount.put(product, 0);
+                }
+                for(Product p :products){
+                    productCount.put(p ,productCount.get(p) + 1);
+                    if(productCount.get(p) > p.getProductCount()){
+                        throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
+                    }
+                }
+            }
+        }
+        products = order.getProducts();
+        for (Product product : products) {
+            productCount.put(product, 0);
+        }
+        for(Product p :products){
+            productCount.put(p ,productCount.get(p) + 1);
+            if(productCount.get(p) > p.getProductCount()){
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
+            }
+        }
+    }
+
+    void enoughBalance(Order order) throws GeneralException {
+        double totalFee = order.calculateTotalFee();
+        if(order instanceof SimpleOrder){
+            if(totalFee + 30 > order.getAccount().getWalletBalance()){
+                String message = "Not enough balance for " + order.getAccount().getUsername();
+                throw new GeneralException(HttpStatus.BAD_REQUEST, message);
+            }
+            order.setPrice(totalFee + 30);
+        }
+        order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() - order.getPrice());
+        if(order instanceof CompoundOrder){
+            ArrayList<SimpleOrder> orders = ((CompoundOrder) order).getOrders();
+            for(Order currOrder : orders){
+                currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice());
+            }
+        }
+    }
+
+    void checkValidCompoundOrder(CompoundOrder compoundOrder) throws GeneralException {
         ArrayList<SimpleOrder> orders = compoundOrder.getOrders();
         for(SimpleOrder order : orders){
             if(order.getAccount().getUsername() == compoundOrder.getAccount().getUsername()){
@@ -112,6 +118,5 @@ public class OrderServicesImpl implements OrderServices{
                 throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Not all orders are in the same city");
             }
         }
-        return true;
     }
 }
