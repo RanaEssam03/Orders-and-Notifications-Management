@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public abstract class NotificationServices {
 
 
-    private NotificationsRepository notificationsRepository;
+    private final NotificationsRepository notificationsRepository;
     MessageChannel messageChannel;
 
     public NotificationServices(MessageChannel messageChannel, NotificationsRepository notificationsRepository) {
