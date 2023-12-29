@@ -23,11 +23,8 @@ public class OrderServicesImpl implements OrderServices{
     @Autowired
     AccountRepo accountRepo;
 
-
-     
     @Override
     public Order addOrder(Order order) throws GeneralException {
-
         if(order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {

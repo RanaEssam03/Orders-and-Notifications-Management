@@ -14,10 +14,10 @@ public class AccountRepositoryImpl implements AccountRepo {
 
 
     public AccountRepositoryImpl() {
-        accounts.add(new Account("ranaessam", "12345$", "ranaessam@gmail.com", "01114335538",new Address("Mokattam","Cairo","dd",5) , 300.0));
-        accounts.add(new Account("nooreyad", "12345$", "nooreyad1@gmail.com", "01146992561",new Address("maadi","Cairo","dd",2) , 200.00));
-        accounts.add(new Account("nourmuhamed", "12#456", "nourmuhamed4@gmail.com", "01155500847",new Address("Dokki","Cairo","dd",16) , 400.00));
-        accounts.add(new Account("mariamhaitham", "1@3456", "mariamhaitham36@gmail.com", "01126134834",new Address("Mokattam","Cairo","dd",8) , 500.50));
+        accounts.add(new Account("ranaessam", "12345$", "ranaessam@gmail.com", "01114335538",new Address("Mokattam","Cairo","dd",5) , 300.0, "English"));
+        accounts.add(new Account("nooreyad", "12345$", "nooreyad1@gmail.com", "01146992561",new Address("maadi","Cairo","dd",2) , 200.00, "English") );
+        accounts.add(new Account("nourmuhamed", "12#456", "nourmuhamed4@gmail.com", "01155500847",new Address("Dokki","Cairo","dd",16) , 400.00, "French"));
+        accounts.add(new Account("mariamhaitham", "1@3456", "mariamhaitham36@gmail.com", "01126134834",new Address("Mokattam","Cairo","dd",8) , 500.50, "German"));
     }
 
 

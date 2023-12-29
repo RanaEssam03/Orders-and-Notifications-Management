@@ -34,9 +34,6 @@ public class OrderController {
     @Autowired
     AccountServices userService;
 
-
-
-
     @ApiResponse(responseCode = "200", description = "Order is  added successfully and return the total price ")
     @PostMapping("/make-order")
     public OrderResponse makeOrder(@RequestBody OrderRequest order, @RequestHeader("Authorization") String authHeader ) throws GeneralException {
@@ -46,7 +43,6 @@ public class OrderController {
         simpleOrder.setProducts(productServices.getProductsByID(order.getProductsIDs()));
         return new OrderResponse(orderServices.addOrder(simpleOrder).getPrice());
     }
-
 
     @ApiResponse(responseCode = "200", description = "Order is  added successfully and return the total price of the person who made the order ")
     @PostMapping("/make-compound-order")
@@ -71,7 +67,6 @@ public class OrderController {
     public Optional<Order> getOrder(@PathVariable("id") Integer id) throws GeneralException {
         return orderServices.getOrder(id);
     }
-
 }
 
 

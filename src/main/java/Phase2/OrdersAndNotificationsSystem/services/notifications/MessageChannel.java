@@ -1,9 +1,10 @@
 package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
-import Phase2.OrdersAndNotificationsSystem.models.Message;
+import Phase2.OrdersAndNotificationsSystem.models.Notification;
+import Phase2.OrdersAndNotificationsSystem.models.ShipmentNotificationServices;
 
 public interface MessageChannel {
-    public void sendMessage(Message message);
+    public void sendMessage(Notification notification);
     public boolean verifyContact(String contact);
 
 }

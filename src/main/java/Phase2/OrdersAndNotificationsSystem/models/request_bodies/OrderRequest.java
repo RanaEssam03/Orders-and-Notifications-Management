@@ -11,6 +11,5 @@ import java.util.ArrayList;
 @Data
 public class OrderRequest {
     ArrayList<Integer> productsIDs;
-
 }
 
