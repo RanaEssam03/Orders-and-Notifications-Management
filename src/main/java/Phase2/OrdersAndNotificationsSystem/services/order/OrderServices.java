@@ -9,13 +9,15 @@ import java.util.Optional;
 public interface OrderServices {
     //TODO : where do i add the cancellation date? OrderServices or OrderController?
 
-    Order addOrder(Order order) throws GeneralException;
+    default Order addOrder(Order order) throws GeneralException{
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     boolean cancelOrder(Order order) throws GeneralException;
     Optional<Order> getOrder(int orderID) throws GeneralException;
 
-    boolean confirmSimpleOrder(Order order) throws GeneralException;
+    Order confirmOrder(Order order) throws GeneralException;
 
-    Order confirmCompoundOrder(Order order) throws GeneralException;
+
 
 }

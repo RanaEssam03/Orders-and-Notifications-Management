@@ -1,11 +1,8 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
-import java.nio.channels.Channel;
 
 @Data
 public class Notification {

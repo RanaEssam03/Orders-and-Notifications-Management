@@ -6,14 +6,13 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import java.util.Collections;
-import java.util.Map;
+
 import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.emailStatistics;
 
 @Service
 public class EmailChannel extends BaseChannelDecorator {
 
-    MessageChannel messageChannel;
+
 
     public void createEmailChannel(@Qualifier(value = "EmailChannel") MessageChannel messageChannel) {
         this.messageChannel = messageChannel;

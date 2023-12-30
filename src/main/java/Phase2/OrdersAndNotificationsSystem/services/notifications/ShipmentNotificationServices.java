@@ -6,10 +6,8 @@ import Phase2.OrdersAndNotificationsSystem.repositories.implementation.Notificat
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.SMSChannel;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

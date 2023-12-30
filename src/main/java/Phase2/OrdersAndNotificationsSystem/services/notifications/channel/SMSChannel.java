@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.smsStatistics;
 
 @Service
 public class SMSChannel extends BaseChannelDecorator {
-    MessageChannel messageChannel;
+
 
 
     // Acts as a constructor for the decorator

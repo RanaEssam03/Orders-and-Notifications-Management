@@ -2,12 +2,12 @@ package Phase2.OrdersAndNotificationsSystem.services.order;
 
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
-import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.CancellationNotificationServices;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.NotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.ShipmentNotificationServices;
@@ -15,11 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class OrderServicesImpl implements OrderServices {
+public class SimpleOrderServiceImpl implements OrderServices {
 
     @Autowired
     OrderRepo orderRepo;
@@ -30,14 +29,18 @@ public class OrderServicesImpl implements OrderServices {
     @Autowired
     ProductServices productServices;
 
-    @Autowired
-    PlacementNotificationServices placementNotificationServices;
+    NotificationServices placementNotificationServices;
 
-    @Autowired
-    ShipmentNotificationServices shipmentNotificationServices;
-    @Autowired
-    CancellationNotificationServices cancellationNotificationServices;
 
+    NotificationServices shipmentNotificationServices;
+
+    NotificationServices cancellationNotificationServices;
+
+    public SimpleOrderServiceImpl(PlacementNotificationServices placementNotificationServices, ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices) {
+        this.placementNotificationServices = placementNotificationServices;
+        this.shipmentNotificationServices = shipmentNotificationServices;
+        this.cancellationNotificationServices = cancellationNotificationServices;
+    }
 
     /**
      * Add the order to the database and reduce the quantity of the products in the order from the inventory
@@ -89,7 +92,7 @@ public class OrderServicesImpl implements OrderServices {
      * @throws GeneralException if the user doesn't have enough balance
      */
     @Override
-    public boolean confirmSimpleOrder(Order order) throws GeneralException {
+    public Order confirmOrder(Order order) throws GeneralException {
         if(order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else{
@@ -102,38 +105,9 @@ public class OrderServicesImpl implements OrderServices {
                 shipmentNotificationServices.sendMessage(order);
             }
         }
-        return true;
+        return order;
     }
 
-    /**
-     * Confirm the compound order by checking if the user has enough balance to place the order or not
-     * @param order the order to be confirmed
-     * @throws GeneralException if the user doesn't have enough balance
-     */
-    @Override
-    public Order confirmCompoundOrder(Order order) throws GeneralException {
-        if(order == null)
-            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
-        else{
-            ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
-            Integer shippingFee = 30/orders.size();
-          for (Order currOrder : orders){
-              if(currOrder.getPrice() + shippingFee > currOrder.getAccount().getWalletBalance())
-                  throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + currOrder.getAccount().getUsername() + " to confirm the order");
-              else {
-                  currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice() + shippingFee);
-                  currOrder.setStatus("Confirmed");
-                  currOrder.setPrice(currOrder.getPrice() + shippingFee);
-
-                  for (Order o: orders) {
-                      shipmentNotificationServices.sendMessage(o);
-                  }
-              }
-
-          }
-        }
-        return orderRepo.addOrder(order);
-    }
 
     /**
      * Check if the user has enough balance to place the order or not

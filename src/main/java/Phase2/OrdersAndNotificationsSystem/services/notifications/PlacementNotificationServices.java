@@ -5,7 +5,6 @@ import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
 import Phase2.OrdersAndNotificationsSystem.repositories.implementation.NotificationRepositoryImpl;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.SMSChannel;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;

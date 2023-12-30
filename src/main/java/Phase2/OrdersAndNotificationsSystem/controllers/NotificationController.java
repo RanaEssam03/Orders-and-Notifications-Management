@@ -1,21 +1,15 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
 
-import Phase2.OrdersAndNotificationsSystem.models.Notification;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationDTO;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationsStatisticsResponse;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.*;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
-import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.messagesQueue;
 
 @RestController
 @RequestMapping("api/notification")
