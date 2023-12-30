@@ -95,18 +95,16 @@ public class CompoundOrderServiceImpl implements OrderServices {
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
             ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
-            Integer shippingFee = 30 / orders.size();
+            Double shippingFee = 30.0 / orders.size();
             for (Order currOrder : orders) {
-                if (currOrder.getPrice() + shippingFee > currOrder.getAccount().getWalletBalance())
+                if (shippingFee > currOrder.getAccount().getWalletBalance())
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + currOrder.getAccount().getUsername() + " to confirm the order");
                 else {
-                    currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - (currOrder.getPrice() + shippingFee));
+                    accountServices.deduct(currOrder.getAccount(), shippingFee);
                     currOrder.setStatus("Confirmed");
                     currOrder.setPrice(currOrder.getPrice() + shippingFee);
+                    shipmentNotificationServices.sendMessage(currOrder);
 
-                    for (Order o : orders) {
-                        shipmentNotificationServices.sendMessage(o);
-                    }
                 }
 
             }

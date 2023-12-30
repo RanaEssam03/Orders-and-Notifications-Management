@@ -68,6 +68,18 @@ public class AccountServicesImp implements AccountServices {
         return true;
     }
 
+    @Override
+    public boolean deduct(Account account, Double amount) throws GeneralException {
+        if(account == null)
+            throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
+        if(amount < 0)
+            throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Invalid amount");
+        if(account.getWalletBalance() < amount)
+            throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Insufficient balance");
+        account.setWalletBalance(account.getWalletBalance() - amount);
+        return true;
+    }
+
 
 }
 

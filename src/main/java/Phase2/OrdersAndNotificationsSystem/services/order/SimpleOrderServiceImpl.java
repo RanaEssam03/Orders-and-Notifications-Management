@@ -65,9 +65,12 @@ public class SimpleOrderServiceImpl implements OrderServices {
             }
 
             enoughBalance(order);
+
         }
         order.setStatus("Pending");
         Order order1 = orderRepo.addOrder(order);
+        accountServices.deduct(order1.getAccount(), order1.getPrice());
+
         placementNotificationServices.sendMessage(order1);
         return order1;
     }
@@ -97,7 +100,6 @@ public class SimpleOrderServiceImpl implements OrderServices {
             }
 
             cancellationNotificationServices.sendMessage(order);
-
             return orderRepo.cancelOrder(order);
         }
     }
@@ -125,7 +127,7 @@ public class SimpleOrderServiceImpl implements OrderServices {
             if (order.getPrice() + 30 > order.getAccount().getWalletBalance())
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance");
             else {
-                order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() -( order.getPrice() + 30));
+                order.getAccount().setWalletBalance(order.getAccount().getWalletBalance() - 30);
                 order.setPrice(order.getPrice() + 30);
                 order.setStatus("Confirmed");
                 shipmentNotificationServices.sendMessage(order);

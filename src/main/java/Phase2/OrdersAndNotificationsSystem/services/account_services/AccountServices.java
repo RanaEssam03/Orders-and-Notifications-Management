@@ -16,4 +16,6 @@ public interface AccountServices {
 
     public boolean refund(Account account, Double amount) throws GeneralException;
 
+    public boolean deduct(Account account, Double amount) throws GeneralException;
+
 }
