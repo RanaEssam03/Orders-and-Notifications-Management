@@ -6,6 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationDTO;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,9 @@ import java.util.ArrayList;
 
 @Service
 public abstract class NotificationServices {
-
-
     @Autowired
     private NotificationsRepository notificationsRepository;
+    @Getter
     MessageChannel messageChannel;
     ArrayList<String> placeholdersModels = new ArrayList<>();
 
@@ -50,4 +50,5 @@ public abstract class NotificationServices {
     }
 
     public abstract Integer getCount();
+
 }

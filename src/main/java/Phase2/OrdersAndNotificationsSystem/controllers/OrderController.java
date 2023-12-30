@@ -93,7 +93,6 @@ public class OrderController {
         return orderServices.getOrder(id);
     }
 
-    //TODO : do we leave it like this or entirely delete the order
     @PutMapping("/cancel-order/{id}")
     public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id,@RequestHeader("Authorization") String authHeader ) throws GeneralException {
         authHeader = authHeader.substring(7);

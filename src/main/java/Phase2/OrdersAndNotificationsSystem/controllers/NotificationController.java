@@ -6,6 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.services.notifications.CancellationNo
 import Phase2.OrdersAndNotificationsSystem.services.notifications.NotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.ShipmentNotificationServices;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +41,8 @@ public class NotificationController {
         return arrayList;
     }
 
-    @GetMapping("/statistics")
-    Optional<String> getStatistics(){
+    @GetMapping("/statistics/most-sent-template")
+    Optional<String> getMostSentTemplate(){
         Integer mostSentNotificationTemplateCount = -1;
         String mostSentNotificationTemplate = null;
         for (NotificationServices notSer: notificationServices){
@@ -55,5 +56,23 @@ public class NotificationController {
             return Optional.empty();
         }
         return mostSentNotificationTemplate.describeConstable();
+    }
+
+    @GetMapping("/statistics/most-notified-user")
+    Optional<String> getMostNotifiedUser(){
+        Integer mostNotifiedUserCount = -1;
+        String mostNotifiedUser = null;
+        for (NotificationServices notSer : notificationServices){
+            MessageChannel msgChnl = notSer.getMessageChannel();
+            Integer cnt = msgChnl.getMostNotifiedUser();;
+            if (cnt > mostNotifiedUserCount){
+                mostNotifiedUserCount = cnt;
+                mostNotifiedUser = notSer.toString();
+            }
+        }
+        if (mostNotifiedUser == null){
+            return Optional.empty();
+        }
+        return mostNotifiedUser.describeConstable();
     }
 }

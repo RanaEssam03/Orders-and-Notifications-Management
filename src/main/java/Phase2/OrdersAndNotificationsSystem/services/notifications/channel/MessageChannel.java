@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 public abstract class MessageChannel {
     NotificationTypes type;
 
-
-
     public NotificationTypes sendMessage(Notification notification) throws GeneralException {
         return type;
     }
     public abstract boolean verifyContact(String contact);
+    public abstract Integer getMostNotifiedUser();
 
 }
