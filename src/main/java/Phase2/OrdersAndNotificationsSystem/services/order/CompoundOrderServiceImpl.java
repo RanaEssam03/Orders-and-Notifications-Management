@@ -6,7 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
-import Phase2.OrdersAndNotificationsSystem.services.accountServices.AccountServices;
+import Phase2.OrdersAndNotificationsSystem.services.account_services.AccountServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.CancellationNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.NotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;

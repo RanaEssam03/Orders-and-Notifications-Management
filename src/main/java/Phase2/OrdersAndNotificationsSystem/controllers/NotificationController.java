@@ -28,6 +28,7 @@ public class NotificationController {
 
     @GetMapping("/all")
     ArrayList<NotificationDTO> getAll(){
+
         return notificationServices.get(0).getNotifications();
     }
 

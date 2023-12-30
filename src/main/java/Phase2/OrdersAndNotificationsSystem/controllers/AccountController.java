@@ -6,7 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.BalanceUpdateRequest;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.LoginResponse;
-import Phase2.OrdersAndNotificationsSystem.services.accountServices.AccountServices;
+import Phase2.OrdersAndNotificationsSystem.services.account_services.AccountServices;
 import Phase2.OrdersAndNotificationsSystem.services.security.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
