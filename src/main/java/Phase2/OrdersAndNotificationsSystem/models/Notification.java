@@ -1,9 +1,11 @@
 package Phase2.OrdersAndNotificationsSystem.models;
 
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.MessageChannel;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
+import java.nio.channels.Channel;
 
 @Data
 public class Notification {
@@ -11,7 +13,7 @@ public class Notification {
     int id;
     Order order;
 
-    MessageChannel messageChannel;
+    String channelType = "";
 
     @JsonIgnore
     static int count = 0;

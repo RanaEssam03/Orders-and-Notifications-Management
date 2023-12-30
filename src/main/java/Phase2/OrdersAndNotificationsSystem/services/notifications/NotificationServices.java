@@ -5,7 +5,9 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationDTO;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,15 +24,19 @@ public abstract class NotificationServices {
 
     protected abstract String createMessage(Order order);
 
-    public NotificationServices(MessageChannel messageChannel, NotificationsRepository notificationsRepository) {
-        this.messageChannel = messageChannel;
+    public NotificationServices( NotificationsRepository notificationsRepository) {
         this.notificationsRepository = notificationsRepository;
+    }
+
+    public void createNotificationServicesChannel(@Qualifier(value = "SMSChannel") MessageChannel messageChannel) {
+        this.messageChannel = messageChannel;
     }
 
     public boolean sendMessage(Order order) throws GeneralException {
         String message = createMessage(order);
-        messageChannel.sendMessage(new Notification(message, order));
-//        notificationsRepository.add(message);
+        Notification notification = new Notification(message, order);
+        messageChannel.sendMessage(notification);
+        notificationsRepository.add(notification);
         return true;
     }
 
