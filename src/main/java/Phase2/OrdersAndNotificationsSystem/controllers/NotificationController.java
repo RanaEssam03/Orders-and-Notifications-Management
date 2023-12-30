@@ -1,7 +1,9 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationDTO;
+import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationsStatisticsResponse;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.*;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -41,7 +43,14 @@ public class NotificationController {
     }
 
     @GetMapping("/most-notified-user")
-    String getMostNotifiedUser(){
+    String getMostNotifiedUser() throws GeneralException {
         return notificationStatisticServices.getMostNotifiedUser();
     }
+    @GetMapping("/get-all-statistics")
+    NotificationsStatisticsResponse getStatistics() throws GeneralException {
+        String mostSentTemplate = notificationStatisticServices.getMostSentTemplate();
+        String notifiedUser = notificationStatisticServices.getMostNotifiedUser();
+        return new NotificationsStatisticsResponse(mostSentTemplate, notifiedUser);
+    }
+
 }

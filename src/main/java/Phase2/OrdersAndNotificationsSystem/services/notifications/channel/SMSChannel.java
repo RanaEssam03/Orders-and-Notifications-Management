@@ -26,14 +26,14 @@ public class SMSChannel extends BaseChannelDecorator {
     public NotificationTypes sendMessage(Notification notification) throws GeneralException {
         if (verifyContact(notification.getOrder().getAccount().getPhoneNumber())) {
             notification.setChannelType(notification.getChannelType()+ "SMS ");
+            Integer count = smsStatistics.get(notification.getOrder().getAccount().getPhoneNumber());
+            if (count == null){
+                smsStatistics.put(notification.getOrder().getAccount().getPhoneNumber(), 1);
+            }
+            else{
+                smsStatistics.put(notification.getOrder().getAccount().getPhoneNumber(),++count);
+            }
             if(messageChannel != null){
-                Integer count = smsStatistics.get(notification.getOrder().getAccount().getPhoneNumber());
-                if (count == null){
-                    smsStatistics.put(notification.getOrder().getAccount().getPhoneNumber(), 1);
-                }
-                else{
-                    smsStatistics.put(notification.getOrder().getAccount().getPhoneNumber(),++count);
-                }
                 return messageChannel.sendMessage(notification);
             }
         }

@@ -22,14 +22,15 @@ public class EmailChannel extends BaseChannelDecorator {
     public NotificationTypes sendMessage(Notification notification) throws GeneralException {
         if (verifyContact(notification.getOrder().getAccount().getEmail())) {
             notification.setChannelType(notification.getChannelType()+ "Email ");
+            Integer count = emailStatistics.get(notification.getOrder().getAccount().getEmail());
+            if (count == null){
+                emailStatistics.put(notification.getOrder().getAccount().getEmail(), 1);
+            }
+            else{
+                emailStatistics.put(notification.getOrder().getAccount().getEmail(),++count);
+            }
             if(messageChannel != null){
-                Integer count = emailStatistics.get(notification.getOrder().getAccount().getEmail());
-                if (count == null){
-                    emailStatistics.put(notification.getOrder().getAccount().getEmail(), 1);
-                }
-                else{
-                    emailStatistics.put(notification.getOrder().getAccount().getEmail(),++count);
-                }
+
                 return messageChannel.sendMessage(notification);
             }
         } else {
