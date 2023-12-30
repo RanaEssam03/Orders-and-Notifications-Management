@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Service
 public class CancellationNotificationServices extends NotificationServices{
-    static private Integer count;
+    static private Integer count = 0;
     Map<String, String> content = new HashMap<>();
 
     void initializeMap(){
@@ -28,7 +28,14 @@ public class CancellationNotificationServices extends NotificationServices{
         MessageChannel messageChannel = new EmailChannel();
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();
+        ++count;
     }
+
+    @Override
+    public Integer getCount() {
+        return count;
+    }
+
     @Override
     protected String createMessage(Order order) {
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());

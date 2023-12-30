@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 public class ShipmentNotificationServices extends NotificationServices{
-
+    private static int count = 0;
     Map<String, String> content = new HashMap<>();
     void initializeMap(){
         content.put("English", "Dear %s, your shipment of the order #%s is confirmed, keep track of your order. Please note that you have 10 minutes to cancel the shipment");
@@ -29,7 +29,14 @@ public class ShipmentNotificationServices extends NotificationServices{
         ((EmailChannel) messageChannel).createEmailChannel(new SMSChannel());
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();
+        ++count;
     }
+
+    @Override
+    public Integer getCount() {
+        return count;
+    }
+
     @Override
     protected String createMessage(Order order) {
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());

@@ -48,4 +48,6 @@ public abstract class NotificationServices {
         }
         return notificationDTOS;
     }
+
+    public abstract Integer getCount();
 }
