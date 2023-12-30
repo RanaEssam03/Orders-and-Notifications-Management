@@ -111,7 +111,7 @@ public class OrderController {
         return simpleOrderServices.getOrder(id);
     }
 
-    @PutMapping("/cancel-order/{id}")
+    @DeleteMapping("/cancel-order/{id}")
     public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id,@RequestHeader("Authorization") String authHeader ) throws GeneralException {
         authHeader = authHeader.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(authHeader);

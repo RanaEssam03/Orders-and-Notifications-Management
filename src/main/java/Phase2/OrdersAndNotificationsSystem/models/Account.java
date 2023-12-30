@@ -18,6 +18,7 @@ public class Account  {
     private Address address;
     @Schema(example = "100.0")
     private double walletBalance;
+    @Schema(example = "German")
     String chosenLanguage;
 
     public Account(String username, String password, String email, String phoneNumber, Address address, double walletBalance, String language) {
