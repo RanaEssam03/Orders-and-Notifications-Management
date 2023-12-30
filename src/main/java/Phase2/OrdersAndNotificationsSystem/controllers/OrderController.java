@@ -122,9 +122,17 @@ public class OrderController {
         if(!username.equals(order.get().getAccount().getUsername())){
             throw new GeneralException(HttpStatus.UNAUTHORIZED, "You are not authorized to cancel this order!");
         }
+
+
         if (order.isPresent()) {
-            simpleOrderServices.cancelOrder(order.get());
+            if(order.get() instanceof CompoundOrder){
+                compoundOrderServices.cancelOrder(order.get());
+            }
+            else {
+                simpleOrderServices.cancelOrder(order.get());
+            }
         }
+
         else
             throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
 

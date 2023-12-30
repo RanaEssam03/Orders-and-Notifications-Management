@@ -12,7 +12,7 @@ public interface ProductServices {
 
     boolean reduceProductQuantity(Product product, Integer quantity) throws GeneralException;
 
-//   public boolean validProductCount(Order order) throws GeneralException;
+    boolean increaseProductQuantity(Product product, Integer quantity) throws GeneralException;
 
 
 }

@@ -24,7 +24,6 @@ public class ProductServicesImp implements ProductServices {
     InventoryImpl inventoryRepo;
 
 
-
     @Override
     public ArrayList<Product> getAllProducts() throws GeneralException {
         Optional<ArrayList<Product>> products = productRepo.getAllProducts();
@@ -82,35 +81,13 @@ public class ProductServicesImp implements ProductServices {
         }
     }
 
-//    public boolean validProductCount(Order order) throws GeneralException {
-//        Map<Product, Integer> productCount = new HashMap<>();
-//        ArrayList<Product > products;
-//        if(order instanceof CompoundOrder){
-//            ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
-//            for(Order currOrder : orders){
-//                products = currOrder.getProducts();
-//                for (Product product : products) {
-//                    productCount.put(product, 0);
-//                }
-//                for(Product p :products){
-//                    productCount.put(p ,productCount.get(p) + 1);
-//                    if(productCount.get(p) > p.getProductCount()){
-//                        throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
-//                    }
-//                }
-//            }
-//        }
-//        products = order.getProducts();
-//        for (Product product : products) {
-//            productCount.put(product, 0);
-//        }
-//        for(Product p :products){
-//            productCount.put(p ,productCount.get(p) + 1);
-//            if(productCount.get(p) > p.getProductCount()){
-//                throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough products in stock");
-//            }
-//        }
-//        return true;
-//
-//    }
+    @Override
+    public boolean increaseProductQuantity(Product product, Integer quantity) throws GeneralException {
+        if(product == null || quantity == null)
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid product or quantity");
+        else {
+            product.setProductCount(product.getProductCount() + quantity);
+            return productRepo.updateProduct(product);
+        }
+    }
 }

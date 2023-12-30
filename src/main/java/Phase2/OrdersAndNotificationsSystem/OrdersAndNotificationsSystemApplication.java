@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-
 // to check API documentation go to http://localhost:8080/swagger-ui/index.html#/
 
 @SpringBootApplication
@@ -15,8 +14,5 @@ public class OrdersAndNotificationsSystemApplication {
 
 }
 
-// TODO
-// time
-// balance
-// quantity after cancellation
+
 

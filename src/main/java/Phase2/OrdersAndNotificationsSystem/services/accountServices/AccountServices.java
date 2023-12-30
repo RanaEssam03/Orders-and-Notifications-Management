@@ -14,4 +14,6 @@ public interface AccountServices {
 
     public  Account getUserByUsername(String username) throws GeneralException;
 
+    public boolean refund(Account account, Double amount) throws GeneralException;
+
 }

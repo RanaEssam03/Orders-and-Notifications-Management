@@ -1,10 +1,12 @@
 package Phase2.OrdersAndNotificationsSystem.services.order;
 
+import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
-import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
+import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
+import Phase2.OrdersAndNotificationsSystem.services.accountServices.AccountServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.CancellationNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.NotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -24,7 +28,7 @@ public class CompoundOrderServiceImpl implements OrderServices {
     OrderRepo orderRepo;
 
     @Autowired
-    AccountRepo accountRepo;
+    AccountServices accountServices;
 
     @Autowired
     ProductServices productServices;
@@ -36,6 +40,8 @@ public class CompoundOrderServiceImpl implements OrderServices {
 
     NotificationServices cancellationNotificationServices;
 
+    int maxDifference = 5; // in minutes
+
     public CompoundOrderServiceImpl(PlacementNotificationServices placementNotificationServices, ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices) {
         this.placementNotificationServices = placementNotificationServices;
         this.shipmentNotificationServices = shipmentNotificationServices;
@@ -43,35 +49,62 @@ public class CompoundOrderServiceImpl implements OrderServices {
     }
 
 
-
     @Override
     public boolean cancelOrder(Order order) throws GeneralException {
 
-        // TODO
+        if (order == null)
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
+        else {
+            ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
+
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(order.getDate(), now);
+            if (duration.toMinutes() > maxDifference)
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Order can't be cancelled after 5 minute of confirming it");
+            if(order.getStatus().equals("Cancelled"))
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
+
+            for (Order o : orders) {
+                if (o.getStatus().equals("Cancelled")) {
+                    throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
+                }
+
+                accountServices.refund(o.getAccount(), o.getPrice());
+                for (Product p : ((SimpleOrder) o).getProducts()) {
+                    productServices.increaseProductQuantity(p, 1);
+                }
+                orderRepo.cancelOrder(o);
+                cancellationNotificationServices.sendMessage(o);
+            }
+
+            cancellationNotificationServices.sendMessage(order);
+            orderRepo.cancelOrder(order);
+        }
+
         return false;
     }
 
     @Override
     public Optional<Order> getOrder(int orderID) throws GeneralException {
-        return Optional.empty();
+        return orderRepo.getOrder(orderID);
     }
 
     @Override
     public Order confirmOrder(Order order) throws GeneralException {
-        if(order == null)
+        if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
-        else{
+        else {
             ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
-            Integer shippingFee = 30/orders.size();
-            for (Order currOrder : orders){
-                if(currOrder.getPrice() + shippingFee > currOrder.getAccount().getWalletBalance())
+            Integer shippingFee = 30 / orders.size();
+            for (Order currOrder : orders) {
+                if (currOrder.getPrice() + shippingFee > currOrder.getAccount().getWalletBalance())
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + currOrder.getAccount().getUsername() + " to confirm the order");
                 else {
-                    currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - currOrder.getPrice() + shippingFee);
+                    currOrder.getAccount().setWalletBalance(currOrder.getAccount().getWalletBalance() - (currOrder.getPrice() + shippingFee));
                     currOrder.setStatus("Confirmed");
                     currOrder.setPrice(currOrder.getPrice() + shippingFee);
 
-                    for (Order o: orders) {
+                    for (Order o : orders) {
                         shipmentNotificationServices.sendMessage(o);
                     }
                 }

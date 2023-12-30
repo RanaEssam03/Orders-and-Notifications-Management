@@ -58,6 +58,15 @@ public class AccountServicesImp implements AccountServices {
         return user;
     }
 
+    @Override
+    public boolean refund(Account account, Double amount) throws GeneralException {
+        if(account == null)
+            throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
+        if(amount < 0)
+            throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Invalid amount");
+        account.setWalletBalance(account.getWalletBalance() + amount);
+        return true;
+    }
 
 
 }
