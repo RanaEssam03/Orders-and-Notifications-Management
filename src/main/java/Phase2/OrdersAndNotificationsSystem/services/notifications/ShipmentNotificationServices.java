@@ -2,6 +2,7 @@ package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
+import Phase2.OrdersAndNotificationsSystem.repositories.implementation.NotificationRepositoryImpl;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.SMSChannel;
@@ -15,7 +16,6 @@ import java.util.Map;
 
 @Service
 public class ShipmentNotificationServices extends NotificationServices{
-    private static int count = 0;
     Map<String, String> content = new HashMap<>();
     void initializeMap(){
         content.put("English", "Dear %s, your shipment of the order #%s is confirmed, keep track of your order. Please note that you have 10 minutes to cancel the shipment");
@@ -29,16 +29,16 @@ public class ShipmentNotificationServices extends NotificationServices{
         ((EmailChannel) messageChannel).createEmailChannel(new SMSChannel());
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();
-        ++count;
     }
 
     @Override
     public Integer getCount() {
-        return count;
+        return notificationsRepository.getShipmentCounter();
     }
 
     @Override
     protected String createMessage(Order order) {
+        NotificationRepositoryImpl.setShipmentCounter(notificationsRepository.getShipmentCounter()+1);
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());
     }
 }

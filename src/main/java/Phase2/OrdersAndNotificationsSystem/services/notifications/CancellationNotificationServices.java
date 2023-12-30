@@ -2,6 +2,7 @@ package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
+import Phase2.OrdersAndNotificationsSystem.repositories.implementation.NotificationRepositoryImpl;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,6 @@ import java.util.Map;
 
 @Service
 public class CancellationNotificationServices extends NotificationServices{
-    static private Integer count = 0;
     Map<String, String> content = new HashMap<>();
 
     void initializeMap(){
@@ -23,21 +23,21 @@ public class CancellationNotificationServices extends NotificationServices{
                 "nous avons hâte de vous revoir bientôt :D");
     }
     // TODO
-    public CancellationNotificationServices( NotificationsRepository notificationsRepository) {
+    public CancellationNotificationServices(NotificationsRepository notificationsRepository) {
         super(notificationsRepository);
         MessageChannel messageChannel = new EmailChannel();
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();
-        ++count;
     }
 
     @Override
     public Integer getCount() {
-        return count;
+        return notificationsRepository.getCancellationCounter();
     }
 
     @Override
     protected String createMessage(Order order) {
+        NotificationRepositoryImpl.setCancellationCounter(notificationsRepository.getCancellationCounter()+1);
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());
     }
 }

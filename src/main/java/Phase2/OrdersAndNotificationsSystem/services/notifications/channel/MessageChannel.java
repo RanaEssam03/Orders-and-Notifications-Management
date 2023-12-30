@@ -15,6 +15,5 @@ public abstract class MessageChannel {
         return type;
     }
     public abstract boolean verifyContact(String contact);
-    public abstract Integer getMostNotifiedUser();
 
 }

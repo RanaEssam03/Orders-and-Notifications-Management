@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @Service
 public abstract class NotificationServices {
     @Autowired
-    private NotificationsRepository notificationsRepository;
+    protected NotificationsRepository notificationsRepository;
     @Getter
     MessageChannel messageChannel;
     ArrayList<String> placeholdersModels = new ArrayList<>();

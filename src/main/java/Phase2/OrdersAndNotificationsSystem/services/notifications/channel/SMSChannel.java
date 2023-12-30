@@ -10,9 +10,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.smsStatistics;
+
 @Service
 public class SMSChannel extends BaseChannelDecorator {
-    Map<String, Integer> statistics = new HashMap<>();
     MessageChannel messageChannel;
 
 
@@ -26,12 +27,12 @@ public class SMSChannel extends BaseChannelDecorator {
         if (verifyContact(notification.getOrder().getAccount().getPhoneNumber())) {
             notification.setChannelType(notification.getChannelType()+ "SMS ");
             if(messageChannel != null){
-                Integer count = statistics.get(notification.getOrder().getAccount().getPhoneNumber());
+                Integer count = smsStatistics.get(notification.getOrder().getAccount().getPhoneNumber());
                 if (count == null){
-                    statistics.put(notification.getOrder().getAccount().getPhoneNumber(), 1);
+                    smsStatistics.put(notification.getOrder().getAccount().getPhoneNumber(), 1);
                 }
                 else{
-                    statistics.put(notification.getOrder().getAccount().getPhoneNumber(),++count);
+                    smsStatistics.put(notification.getOrder().getAccount().getPhoneNumber(),++count);
                 }
                 return messageChannel.sendMessage(notification);
             }
@@ -51,11 +52,6 @@ public class SMSChannel extends BaseChannelDecorator {
     @Override
     public boolean verifyContact(String contact) {
         return contact.length() == 11;
-    }
-
-    @Override
-    public Integer getMostNotifiedUser() {
-        return Collections.max(statistics.entrySet(), Map.Entry.comparingByValue()).getValue();
     }
 }
 

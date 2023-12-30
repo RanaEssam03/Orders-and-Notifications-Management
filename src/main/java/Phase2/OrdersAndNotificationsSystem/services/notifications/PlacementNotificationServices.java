@@ -2,6 +2,7 @@ package Phase2.OrdersAndNotificationsSystem.services.notifications;
 
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
+import Phase2.OrdersAndNotificationsSystem.repositories.implementation.NotificationRepositoryImpl;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.SMSChannel;
@@ -11,7 +12,6 @@ import java.util.Map;
 
 @Service
 public class PlacementNotificationServices extends NotificationServices {
-    static private Integer count = 0;
     Map<String, String> content = new HashMap<>();
     void initializeMap(){
         content.put("English", "Dear %s, your order of ID: %s is placed. Thanks for using our online store :)" +
@@ -27,16 +27,16 @@ public class PlacementNotificationServices extends NotificationServices {
         MessageChannel messageChannel = new EmailChannel();
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();
-        ++count;
     }
 
     @Override
     public Integer getCount() {
-        return count;
+        return notificationsRepository.getConfirmationCounter();
     }
 
     @Override
     protected String createMessage(Order order) {
+        NotificationRepositoryImpl.setConfirmationCounter(notificationsRepository.getConfirmationCounter()+1);
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());
     }
 }

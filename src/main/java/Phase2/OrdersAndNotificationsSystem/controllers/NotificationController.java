@@ -2,10 +2,7 @@ package Phase2.OrdersAndNotificationsSystem.controllers;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.NotificationDTO;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.CancellationNotificationServices;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.NotificationServices;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.ShipmentNotificationServices;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.*;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,8 @@ import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.mes
 public class NotificationController {
 
     ArrayList<NotificationServices> notificationServices = new ArrayList<>();
+    @Autowired
+    NotificationStatisticServices notificationStatisticServices;
 
     public NotificationController(ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices,
                                   PlacementNotificationServices placementNotificationServices) {
@@ -33,46 +32,16 @@ public class NotificationController {
 
     @GetMapping("/all")
     ArrayList<NotificationDTO> getAll(){
-        ArrayList<NotificationDTO> arrayList = new ArrayList<>();
-        for (NotificationServices notSer: notificationServices){
-            ArrayList<NotificationDTO> dtoArrayList = notSer.getNotifications();
-            arrayList.addAll(dtoArrayList);
-        }
-        return arrayList;
+        return notificationServices.get(0).getNotifications();
     }
 
-    @GetMapping("/statistics/most-sent-template")
-    Optional<String> getMostSentTemplate(){
-        Integer mostSentNotificationTemplateCount = -1;
-        String mostSentNotificationTemplate = null;
-        for (NotificationServices notSer: notificationServices){
-            Integer cnt = notSer.getCount();
-            if (cnt > mostSentNotificationTemplateCount){
-                mostSentNotificationTemplateCount = cnt;
-                mostSentNotificationTemplate = notSer.toString();
-            }
-        }
-        if (mostSentNotificationTemplate == null){
-            return Optional.empty();
-        }
-        return mostSentNotificationTemplate.describeConstable();
+    @GetMapping("/most-sent-template")
+    String getMostSentTemplate(){
+        return notificationStatisticServices.getMostSentTemplate();
     }
 
-    @GetMapping("/statistics/most-notified-user")
-    Optional<String> getMostNotifiedUser(){
-        Integer mostNotifiedUserCount = -1;
-        String mostNotifiedUser = null;
-        for (NotificationServices notSer : notificationServices){
-            MessageChannel msgChnl = notSer.getMessageChannel();
-            Integer cnt = msgChnl.getMostNotifiedUser();;
-            if (cnt > mostNotifiedUserCount){
-                mostNotifiedUserCount = cnt;
-                mostNotifiedUser = notSer.toString();
-            }
-        }
-        if (mostNotifiedUser == null){
-            return Optional.empty();
-        }
-        return mostNotifiedUser.describeConstable();
+    @GetMapping("/most-notified-user")
+    String getMostNotifiedUser(){
+        return notificationStatisticServices.getMostNotifiedUser();
     }
 }

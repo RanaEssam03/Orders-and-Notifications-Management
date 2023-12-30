@@ -11,5 +11,8 @@ public interface NotificationsRepository {
     public ArrayList<Notification> getAll();
 
     public boolean delete(Notification message);
+    public int getCancellationCounter();
+    public int getConfirmationCounter();
+    public int getShipmentCounter();
     public ArrayList<Notification> getAllNotifications();
 }
