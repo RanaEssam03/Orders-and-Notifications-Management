@@ -18,9 +18,9 @@ public class ShipmentNotificationServices extends NotificationServices{
 
     Map<String, String> content = new HashMap<>();
     void initializeMap(){
-        content.put("English", "Dear %s, your shipment of the order #%s is confirmed, keep track of your order.");
-        content.put("German", "Sehr geehrter %s, Ihr Versand der Bestellung #%s wurde bestätigt. Behalten Sie den Überblick über Ihre Bestellung.");
-        content.put("French", "Cher %s, votre expédition de la commande n°%s est confirmée, gardez une trace de votre commande.");
+        content.put("English", "Dear %s, your shipment of the order #%s is confirmed, keep track of your order. Please note that you have 10 minutes to cancel the shipment");
+        content.put("German", "Sehr geehrter %s, Ihr Versand der Bestellung #%s wurde bestätigt. Behalten Sie den Überblick über Ihre Bestellung. Bitte beachten Sie, dass Sie 10 Minuten Zeit haben, um die Sendung zu stornieren");
+        content.put("French", "Cher %s, votre expédition de la commande n°%s est confirmée, gardez une trace de votre commande. Veuillez noter que vous disposez de 10 minutes pour annuler l'envoi");
     }
     // TODO
     public ShipmentNotificationServices( NotificationsRepository notificationsRepository) {

@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface OrderRepo {
     Order addOrder(Order order) throws GeneralException;
-    boolean removeOrder(Order order);
+    boolean cancelOrder(Order order);
     Optional<Order> getOrder(int orderID);
 }

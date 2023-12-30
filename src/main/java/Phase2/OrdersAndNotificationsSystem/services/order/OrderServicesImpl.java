@@ -7,6 +7,7 @@ import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.CancellationNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.PlacementNotificationServices;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.ShipmentNotificationServices;
@@ -34,6 +35,8 @@ public class OrderServicesImpl implements OrderServices {
 
     @Autowired
     ShipmentNotificationServices shipmentNotificationServices;
+    @Autowired
+    CancellationNotificationServices cancellationNotificationServices;
 
 
     /**
@@ -61,14 +64,14 @@ public class OrderServicesImpl implements OrderServices {
         return order1;
     }
 
-
-
     @Override
-    public boolean removeOrder(Order order) throws GeneralException {
+    public boolean cancelOrder(Order order) throws GeneralException {
         if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
-        else
-            return orderRepo.removeOrder(order);
+        else {
+            cancellationNotificationServices.sendMessage(order);
+            return orderRepo.cancelOrder(order);
+        }
     }
 
     @Override
@@ -97,7 +100,6 @@ public class OrderServicesImpl implements OrderServices {
                 order.setPrice(order.getPrice() + 30);
                 order.setStatus("Confirmed");
                 shipmentNotificationServices.sendMessage(order);
-
             }
         }
         return true;
@@ -110,7 +112,6 @@ public class OrderServicesImpl implements OrderServices {
      */
     @Override
     public Order confirmCompoundOrder(Order order) throws GeneralException {
-
         if(order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else{

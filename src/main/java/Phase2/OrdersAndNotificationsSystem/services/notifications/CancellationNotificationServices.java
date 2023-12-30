@@ -4,26 +4,27 @@ import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.repositories.NotificationsRepository;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
-import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.SMSChannel;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class PlacementNotificationServices extends NotificationServices {
-    static private Integer id;
+public class CancellationNotificationServices extends NotificationServices{
+    static private Integer count;
     Map<String, String> content = new HashMap<>();
+
     void initializeMap(){
-        content.put("English", "Dear %s, your order of ID: %s is placed. Thanks for using our online store :)" +
-                " You have 1 day to cancel your order");
-        content.put("German", "Sehr geehrter %s, Ihre Bestellung mit der ID: %s wurde aufgegeben. Vielen Dank, dass Sie unseren Online-Shop nutzen :) " +
-                "Sie haben 1 Tag Zeit, Ihre Bestellung zu stornieren");
-        content.put("French", "Cher %s, votre commande d'ID : %s a été passée. Merci d'utiliser notre boutique en ligne :)" +
-                " Vous avez 1 jour pour annuler votre commande");
+        content.put("English", "Dear %s, we are sorry you had to cancel your order of ID: %s :( " +
+                "we are looking forward to seeing you soon :D");
+        content.put("German", "Lieber %s, es tut uns leid, dass Sie Ihre Bestellung von ID: %s stornieren mussten :( " +
+                "wir freuen uns auf ein baldiges Wiedersehen :D");
+        content.put("French", "Cher %s, nous sommes désolés que vous ayez dû annuler votre commande de pièce d'identité : %s :( " +
+                "nous avons hâte de vous revoir bientôt :D");
     }
     // TODO
-    public PlacementNotificationServices( NotificationsRepository notificationsRepository) {
-        super( notificationsRepository);
+    public CancellationNotificationServices( NotificationsRepository notificationsRepository) {
+        super(notificationsRepository);
         MessageChannel messageChannel = new EmailChannel();
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();

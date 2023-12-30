@@ -6,6 +6,7 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.CompoundOrderRequest;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.OrderRequest;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.OrderResponse;
+import Phase2.OrdersAndNotificationsSystem.repositories.database.Data;
 import Phase2.OrdersAndNotificationsSystem.services.accountServices.AccountServices;
 import Phase2.OrdersAndNotificationsSystem.services.order.OrderServices;
 import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
@@ -53,7 +54,6 @@ public class OrderController {
         if(username == null){
             throw new GeneralException(HttpStatus.UNAUTHORIZED, "Token is missed!");
         }
-
         Optional<Order> order = orderServices.getOrder(id);
         if(order.get().getStatus().equals("Confirmed")){
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already confirmed!");
@@ -91,6 +91,30 @@ public class OrderController {
     @GetMapping("/get-order/{id}")
     public Optional<Order> getOrder(@PathVariable("id") Integer id) throws GeneralException {
         return orderServices.getOrder(id);
+    }
+
+    //TODO : do we leave it like this or entirely delete the order
+    @PutMapping("/cancel-order/{id}")
+    public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id,@RequestHeader("Authorization") String authHeader ) throws GeneralException {
+        authHeader = authHeader.substring(7);
+        String username = jwtTokenUtil.getUsernameFromToken(authHeader);
+        if(username == null){
+            throw new GeneralException(HttpStatus.UNAUTHORIZED, "Token is missed!");
+        }
+        Optional<Order> order = orderServices.getOrder(id);
+        if(order.get().getStatus().equals("Cancelled")){
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled!");
+        }
+        if(!username.equals(order.get().getAccount().getUsername())){
+            throw new GeneralException(HttpStatus.UNAUTHORIZED, "You are not authorized to cancel this order!");
+        }
+        if (order.isPresent()) {
+            orderServices.cancelOrder(order.get());
+        }
+        else
+            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
+
+        return new ResponseEntity<>("Order is cancelled successfully", HttpStatus.OK);
     }
 }
 

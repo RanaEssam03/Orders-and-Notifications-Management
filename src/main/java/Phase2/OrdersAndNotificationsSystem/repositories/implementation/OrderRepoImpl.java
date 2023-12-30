@@ -21,8 +21,13 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public boolean removeOrder(Order order) {
-        return orders.remove(order);
+    public boolean cancelOrder(Order order) {
+        if (orders.contains(order)){
+            int i = orders.indexOf(order);
+            orders.get(i).setStatus("Cancelled");
+            return true;
+        }
+        return false;
     }
 
     @Override

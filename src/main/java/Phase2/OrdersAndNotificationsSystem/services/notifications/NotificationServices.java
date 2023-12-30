@@ -46,8 +46,6 @@ public abstract class NotificationServices {
         for (Notification notification : notifications) {
             notificationDTOS.add(new NotificationDTO(notification));
         }
-
-
         return notificationDTOS;
     }
 }
