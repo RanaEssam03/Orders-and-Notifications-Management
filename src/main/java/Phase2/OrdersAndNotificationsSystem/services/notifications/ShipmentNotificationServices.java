@@ -8,6 +8,7 @@ import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.Messag
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.SMSChannel;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,14 +30,25 @@ public class ShipmentNotificationServices extends NotificationServices{
         initializeMap();
     }
 
-    @Override
-    public Integer getCount() {
-        return notificationsRepository.getShipmentCounter();
+    public Map<String, Integer> getCount() {
+        Map<String, Integer> result = new HashMap<>();
+        result.put(Collections.max(notificationsRepository.getShipmentCounter().entrySet(), Map.Entry.comparingByValue()).getKey(),
+                Collections.max(notificationsRepository.getShipmentCounter().entrySet(), Map.Entry.comparingByValue()).getValue());
+        return result;
     }
 
     @Override
     protected String createMessage(Order order) {
-        NotificationRepositoryImpl.setShipmentCounter(notificationsRepository.getShipmentCounter()+1);
+        Map<String, Integer> newCounter = notificationsRepository.getShipmentCounter();
+        String lang = order.getAccount().getChosenLanguage();
+        Integer count = newCounter.get(lang);
+        if (count == null){
+            newCounter.put(lang, 1);
+        }
+        else{
+            newCounter.replace(lang, newCounter.get(lang), newCounter.get(lang)+1);
+        }
+        NotificationRepositoryImpl.setShipmentCounter(newCounter);
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());
     }
 }

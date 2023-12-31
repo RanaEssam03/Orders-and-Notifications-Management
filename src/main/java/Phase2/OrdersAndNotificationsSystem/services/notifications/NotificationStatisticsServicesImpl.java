@@ -14,16 +14,38 @@ import java.util.Map;
 public class NotificationStatisticsServicesImpl implements NotificationStatisticServices{
     @Autowired
     NotificationsRepository notificationsRepository;
-
     @Override
     public String getMostSentTemplate() {
-        int shipmentCount = notificationsRepository.getShipmentCounter();
-        int cancellationCount = notificationsRepository.getCancellationCounter();
-        int placementCount = notificationsRepository.getConfirmationCounter();
-        int max = Math.max(shipmentCount, Math.max(cancellationCount, placementCount));
-        if (max == shipmentCount) return "Shipment Template";
-        if (max == placementCount) return "Placement Template";
-        else return "Cancellation Template";
+        String returnString = "The most used template is %s in the %s notification";
+        Map<String, Integer> shipmentCount = notificationsRepository.getShipmentCounter();
+        Map<String, Integer> cancellationCount = notificationsRepository.getCancellationCounter();
+        Map<String, Integer> placementCount = notificationsRepository.getConfirmationCounter();
+        int shipment = Collections.max(notificationsRepository.getShipmentCounter().entrySet(), Map.Entry.comparingByValue()).getValue();
+        int cancellation = Collections.max(notificationsRepository.getCancellationCounter().entrySet(), Map.Entry.comparingByValue()).getValue();
+        int placement = Collections.max(notificationsRepository.getConfirmationCounter().entrySet(), Map.Entry.comparingByValue()).getValue();
+        int max = Math.max(shipment, Math.max(cancellation, placement));
+        if (max == shipment) {
+            for (Map.Entry<String,Integer> entry : shipmentCount.entrySet()){
+                if (entry.getValue() == shipment){
+                    return String.format(returnString, entry.getKey(), "Shipment");
+                }
+            }
+        }
+        if (max == placement) {
+            for (Map.Entry<String,Integer> entry : placementCount.entrySet()){
+                if (entry.getValue() == placement){
+                    return String.format(returnString, entry.getKey(), "Placement");
+                }
+            }
+        }
+        else {
+            for (Map.Entry<String, Integer> entry : cancellationCount.entrySet()) {
+                if (entry.getValue() == cancellation) {
+                    return String.format(returnString, entry.getKey(), "Cancellation");
+                }
+            }
+        }
+        return null;
     }
 
     @Override
