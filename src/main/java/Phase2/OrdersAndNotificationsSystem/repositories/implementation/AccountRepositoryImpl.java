@@ -43,6 +43,11 @@ public class AccountRepositoryImpl implements AccountRepo {
 
     @Override
     public void updateUser(Account user) {
+        for (Account u : accounts) {
+            if (u.getUsername().equals(user.getUsername())) {
+                u = user;
+            }
+        }
 
     }
     @Override

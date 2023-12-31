@@ -106,16 +106,11 @@ public class SimpleOrderServiceImpl implements OrderServices {
 
     @Override
     public Optional<Order> getOrder(int orderID) throws GeneralException {
-        Optional<Order> order = orderRepo.getOrder(orderID);
-        if (order.isPresent())
-            return order;
-        else
-            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
+        return orderRepo.getOrder(orderID);
     }
 
     /**
      * Confirm the simple order by checking if the user has enough balance to place the order or not
-     *
      * @param order the order to be confirmed
      * @throws GeneralException if the user doesn't have enough balance
      */

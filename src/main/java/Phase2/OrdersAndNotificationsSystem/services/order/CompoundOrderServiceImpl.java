@@ -24,14 +24,16 @@ import java.util.Optional;
 @Service
 public class CompoundOrderServiceImpl implements OrderServices {
 
-    @Autowired
-    OrderRepo orderRepo;
 
     @Autowired
     AccountServices accountServices;
 
     @Autowired
     ProductServices productServices;
+
+    @Autowired
+    OrderRepo orderRepo;
+
 
     NotificationServices placementNotificationServices;
 
@@ -86,14 +88,15 @@ public class CompoundOrderServiceImpl implements OrderServices {
 
     @Override
     public Optional<Order> getOrder(int orderID) throws GeneralException {
-        return orderRepo.getOrder(orderID);
+      return orderRepo.getOrder(orderID);
     }
-
     @Override
     public Order confirmOrder(Order order) throws GeneralException {
         if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
+            double total = order.calculateTotalFee();
+            order.setPrice(total+30);
             ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
             Double shippingFee = 30.0 / orders.size();
             for (Order currOrder : orders) {
