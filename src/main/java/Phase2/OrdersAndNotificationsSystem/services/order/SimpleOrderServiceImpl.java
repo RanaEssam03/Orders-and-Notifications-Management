@@ -1,7 +1,6 @@
 package Phase2.OrdersAndNotificationsSystem.services.order;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
-import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
@@ -14,11 +13,8 @@ import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class SimpleOrderServiceImpl extends OrderServices {
@@ -39,7 +35,6 @@ public class SimpleOrderServiceImpl extends OrderServices {
     NotificationServices shipmentNotificationServices;
 
     NotificationServices cancellationNotificationServices;
-
 
 
     public SimpleOrderServiceImpl(PlacementNotificationServices placementNotificationServices, ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices) {
@@ -69,7 +64,7 @@ public class SimpleOrderServiceImpl extends OrderServices {
             enoughBalance(order);
 
         }
-        order.setStatus("Pending");
+        order.setStatus("Placed");
         Order order1 = orderRepo.addOrder(order);
         accountServices.deduct(order1.getAccount(), order1.getPrice());
 
@@ -90,7 +85,7 @@ public class SimpleOrderServiceImpl extends OrderServices {
 
 
             order.setStatus("Cancelled");
-            accountServices.refund(order.getAccount(), order.getPrice()+ order.getShippingFee());
+            accountServices.refund(order.getAccount(), order.getPrice() + order.getShippingFee());
             for (Product product : ((SimpleOrder) order).getProducts()) {
                 productServices.increaseProductQuantity(product, 1);
             }
@@ -107,6 +102,7 @@ public class SimpleOrderServiceImpl extends OrderServices {
 
     /**
      * Confirm the simple order by checking if the user has enough balance to place the order or not
+     *
      * @param order the order to be confirmed
      * @throws GeneralException if the user doesn't have enough balance
      */
@@ -115,12 +111,12 @@ public class SimpleOrderServiceImpl extends OrderServices {
         if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
-            if ( 30 > order.getAccount().getWalletBalance())
+            if (30 > order.getAccount().getWalletBalance())
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance");
             else {
-                if(order.getStatus().equals("Confirmed"))
+                if (order.getStatus().equals("Confirmed"))
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already confirmed");
-                if(order.getStatus().equals("Cancelled"))
+                if (order.getStatus().equals("Cancelled"))
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
                 accountServices.deduct(order.getAccount(), 30.0);
                 order.setShippingFee(30.0);
@@ -131,10 +127,6 @@ public class SimpleOrderServiceImpl extends OrderServices {
         return order;
     }
 
-    @Override // TODO
-    public List<Order> getAllOrders() throws GeneralException {
-        return null;
-    }
 
     @Override
     public void cancelShipment(Order order) throws GeneralException {

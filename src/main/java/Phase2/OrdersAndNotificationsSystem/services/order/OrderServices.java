@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class OrderServices {
-    int maxDifference = 1; // in minutes
+    int maxDifference = 5; // in minutes
 
 
     public abstract Order addOrder(Order order) throws GeneralException;
@@ -22,7 +22,7 @@ public abstract class OrderServices {
 
     public abstract Order confirmOrder(Order order) throws GeneralException;
 
-    public abstract List<Order> getAllOrders() throws GeneralException;
+
 
     /**
      * Check if the user has enough balance to place the order or not

@@ -59,7 +59,7 @@ public class CompoundOrderServiceImpl extends OrderServices {
         for (Product product : (order).getProducts()) {
             productServices.reduceProductQuantity(product, 1);
         }
-        order.setStatus("Pending");
+        order.setStatus("Placed");
         Order order1 = orderRepo.addOrder(order);
         accountServices.deduct(order1.getAccount(), order1.getPrice());
         placementNotificationServices.sendMessage(order1);
@@ -139,10 +139,7 @@ public class CompoundOrderServiceImpl extends OrderServices {
     }
 
 
-    @Override
-    public List<Order> getAllOrders() throws GeneralException {
-        return null;
-    }
+
 
     @Override
     public void cancelShipment(Order order) throws GeneralException {
