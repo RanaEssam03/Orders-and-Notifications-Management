@@ -1,13 +1,12 @@
 package Phase2.OrdersAndNotificationsSystem.controllers;
 
+import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
-import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.CompoundOrderRequest;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.OrderRequest;
 import Phase2.OrdersAndNotificationsSystem.models.response_bodies.OrderResponse;
-import Phase2.OrdersAndNotificationsSystem.repositories.database.Data;
 import Phase2.OrdersAndNotificationsSystem.services.account_services.AccountServices;
 import Phase2.OrdersAndNotificationsSystem.services.order.CompoundOrderServiceImpl;
 import Phase2.OrdersAndNotificationsSystem.services.order.OrderServices;
@@ -133,31 +132,30 @@ public class OrderController {
     /**
      * Places a compound order for a user.
      *
-     * @param order      The order details provided in the request body.
      * @param authHeader The authorization header containing the JWT token.
      * @return An OrderResponse containing the ID of the confirmed compound order.
      * @throws GeneralException If there is an issue with placing the compound order or handling the token.
      */
     @ApiResponse(responseCode = "200", description = "Order is  added successfully and return the total price of the person who made the order ")
     @PostMapping("/confirm-compound-order/{id}")
-    public OrderResponse confirmCompoundOrder( @RequestHeader("Authorization") String authHeader, @PathVariable("id") Integer id) throws GeneralException {
+    public OrderResponse confirmCompoundOrder(@RequestHeader("Authorization") String authHeader, @PathVariable("id") Integer id) throws GeneralException {
         if (authHeader == null) {
             throw new GeneralException(HttpStatus.UNAUTHORIZED, "Token is missed!");
         }
         String username = jwtTokenUtil.getUsernameFromToken(authHeader.substring(7));
-        Order compoundOrder  ;
-        if(compoundOrderServices.getOrder(id).isEmpty())
+        Order compoundOrder;
+        if (compoundOrderServices.getOrder(id).isEmpty())
             throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
         else
             compoundOrder = compoundOrderServices.getOrder(id).get();
 
-        if(compoundOrder == null || compoundOrder instanceof SimpleOrder){
+        if (compoundOrder == null || compoundOrder instanceof SimpleOrder) {
             throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
         }
         if (!username.equals(compoundOrder.getAccount().getUsername())) {
             throw new GeneralException(HttpStatus.UNAUTHORIZED, "You are not authorized to confirm this order!");
         }
-        if(compoundOrder.getStatus().equals("Confirmed")){
+        if (compoundOrder.getStatus().equals("Confirmed")) {
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already confirmed!");
         }
         return new OrderResponse(compoundOrderServices.confirmOrder(compoundOrder).getId());
@@ -173,7 +171,12 @@ public class OrderController {
 
     @GetMapping("/get-order/{id}")
     public Optional<Order> getOrder(@PathVariable("id") Integer id) throws GeneralException {
-        return simpleOrderServices.getOrder(id);
+
+        Optional<Order> order = simpleOrderServices.getOrder(id);
+        if (order.isEmpty())
+            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
+
+        return order;
     }
 
     /**
@@ -227,10 +230,10 @@ public class OrderController {
             throw new GeneralException(HttpStatus.UNAUTHORIZED, "You are not authorized to cancel this order!");
         }
 
-        if(order.get().getStatus().equals("Placed")){
+        if (order.get().getStatus().equals("Placed")) {
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is not confirmed yet!");
         }
-        if(order.get() instanceof  CompoundOrder)
+        if (order.get() instanceof CompoundOrder)
             compoundOrderServices.cancelShipment(order.get());
         else
             simpleOrderServices.cancelShipment(order.get());

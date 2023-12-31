@@ -19,28 +19,12 @@ import java.util.Optional;
 @Service
 public class SimpleOrderServiceImpl extends OrderServices {
 
-    @Autowired
-    OrderRepo orderRepo;
 
-    @Autowired
-    AccountServices accountServices;
-
-    @Autowired
-    ProductServices productServices;
-
-
-    NotificationServices placementNotificationServices;
-
-
-    NotificationServices shipmentNotificationServices;
-
-    NotificationServices cancellationNotificationServices;
 
 
     public SimpleOrderServiceImpl(PlacementNotificationServices placementNotificationServices, ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices) {
-        this.placementNotificationServices = placementNotificationServices;
-        this.shipmentNotificationServices = shipmentNotificationServices;
-        this.cancellationNotificationServices = cancellationNotificationServices;
+        super( placementNotificationServices, shipmentNotificationServices,  cancellationNotificationServices);
+
     }
 
     /**

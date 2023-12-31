@@ -55,7 +55,7 @@ public class NotificationController {
      * @return A String representing the template of the most sent notification.
      */
     @GetMapping("/most-sent-template")
-    String getMostSentTemplate() {
+    String getMostSentTemplate() throws GeneralException {
         return notificationStatisticServices.getMostSentTemplate();
     }
 

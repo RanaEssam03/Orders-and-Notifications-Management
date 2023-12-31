@@ -3,6 +3,11 @@ package Phase2.OrdersAndNotificationsSystem.services.order;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
+import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
+import Phase2.OrdersAndNotificationsSystem.services.account_services.AccountServices;
+import Phase2.OrdersAndNotificationsSystem.services.notifications.NotificationServices;
+import Phase2.OrdersAndNotificationsSystem.services.products.ProductServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.time.Duration;
@@ -13,6 +18,27 @@ import java.util.Optional;
 public abstract class OrderServices {
     int maxDifference = 5; // in minutes
 
+    @Autowired
+    AccountServices accountServices;
+
+    @Autowired
+    ProductServices productServices;
+
+    @Autowired
+    OrderRepo orderRepo;
+
+    NotificationServices placementNotificationServices;
+
+
+    NotificationServices shipmentNotificationServices;
+
+    NotificationServices cancellationNotificationServices;
+
+    public OrderServices(NotificationServices placementNotificationServices, NotificationServices shipmentNotificationServices, NotificationServices cancellationNotificationServices) {
+        this.placementNotificationServices = placementNotificationServices;
+        this.shipmentNotificationServices = shipmentNotificationServices;
+        this.cancellationNotificationServices = cancellationNotificationServices;
+    }
 
     public abstract Order addOrder(Order order) throws GeneralException;
 

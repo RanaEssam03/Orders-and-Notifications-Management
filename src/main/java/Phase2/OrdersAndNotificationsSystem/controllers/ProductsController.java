@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Controller class for managing product-related operations.
@@ -44,7 +45,11 @@ public class ProductsController {
      * @throws GeneralException If there is an issue with the retrieval of products by category.
      */
     @GetMapping("/all-by-category/{id}")
-    public ArrayList<Product> getProductsByCategory(@PathVariable("id") Integer id) throws GeneralException {
-        return productService.getProductsByCategory(id);
+    public  Map<Object, Object> getProductsByCategory(@PathVariable("id") Integer id) throws GeneralException {
+        Map<Object, Object> mp  = new java.util.HashMap<>();
+        ArrayList<Product> products = productService.getProductsByCategory(id);
+        mp.put("products count of this category", products.size());
+       mp.put("products", products);
+        return mp;
     }
 }

@@ -26,28 +26,12 @@ import java.util.Optional;
 public class CompoundOrderServiceImpl extends OrderServices {
 
 
-    @Autowired
-    AccountServices accountServices;
-
-    @Autowired
-    ProductServices productServices;
-
-    @Autowired
-    OrderRepo orderRepo;
-
-    NotificationServices placementNotificationServices;
-
-
-    NotificationServices shipmentNotificationServices;
-
-    NotificationServices cancellationNotificationServices;
 
     int maxDifference = 5; // in minutes for cancellation
 
     public CompoundOrderServiceImpl(PlacementNotificationServices placementNotificationServices, ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices) {
-        this.placementNotificationServices = placementNotificationServices;
-        this.shipmentNotificationServices = shipmentNotificationServices;
-        this.cancellationNotificationServices = cancellationNotificationServices;
+     super( placementNotificationServices, shipmentNotificationServices,  cancellationNotificationServices);
+
     }
 
 
