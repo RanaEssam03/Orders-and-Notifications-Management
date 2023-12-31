@@ -5,6 +5,9 @@ import lombok.Data;
 
 @Data
 public class BalanceUpdateRequest {
+    /**
+     * The amount by which the balance should be updated.
+     */
     @Schema(example = "1000")
     Double amount;
 

@@ -21,6 +21,10 @@ import java.util.Map;
 // to see the generated documentation for the API
 // you can also go to http://localhost:8080/v3/api-docs to see the raw documentation
 
+/**
+ * Controller class for managing user account-related operations.
+ * Provides endpoints for user login, registration, and balance management.
+ */
 @RequestMapping("api/user")
 @RestController
 public class AccountController {
@@ -31,9 +35,17 @@ public class AccountController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+
+    /**
+     * Handles user login, generating a JWT token upon successful authentication.
+     *
+     * @param credentials The user credentials provided in the request body.
+     * @return ResponseEntity containing a LoginResponse with the JWT token.
+     * @throws GeneralException If there is an issue with user verification or authentication.
+     */
     @GetMapping("/check")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Login is successful" ),
+            @ApiResponse(responseCode = "200", description = "Login is successful"),
             @ApiResponse(responseCode = "406", description = "Invalid Credentials", content = @io.swagger.v3.oas.annotations.media.Content),
             @ApiResponse(responseCode = "404", description = "User Not Found", content = @io.swagger.v3.oas.annotations.media.Content)
 
@@ -41,14 +53,21 @@ public class AccountController {
     public ResponseEntity<LoginResponse> login(@RequestBody Credentials credentials) throws GeneralException {
 
         Account account = userServices.verifyUser(credentials);
-        if( userServices.verifyUser(credentials) != null) {
+        if (userServices.verifyUser(credentials) != null) {
             String token = jwtTokenUtil.generateToken(account.getUsername());
             return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
-        }
-           else
-            throw new GeneralException(HttpStatus.NOT_FOUND,"Invalid Credentials");
+        } else
+            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid Credentials");
     }
 
+
+    /**
+     * Handles user registration, adding a new account to the system.
+     *
+     * @param account The account details provided in the request body.
+     * @return ResponseEntity indicating the success of the registration.
+     * @throws GeneralException If there is an issue with user registration.
+     */
     @PostMapping("/register")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Account is  added successfully"),
@@ -62,6 +81,15 @@ public class AccountController {
         return new ResponseEntity<>("Account is  added successfully", HttpStatus.CREATED);
     }
 
+    /**
+     * Updates the balance of a user's account.
+     *
+     * @param request    The balance update request details provided in the request body.
+     * @param authHeader The authorization header containing the JWT token.
+     * @return ResponseEntity indicating the success of the balance update.
+     * @throws GeneralException If there is an issue with updating the balance or handling the token.
+     */
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Balance is  updated successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid amount"),
@@ -73,33 +101,36 @@ public class AccountController {
         String token = authHeader.substring(7);
         String tokenUsername = jwtTokenUtil.getUsernameFromToken(token);
         Account account = userServices.getUserByUsername(tokenUsername);
-        if(account == null)
+        if (account == null)
             throw new GeneralException(HttpStatus.NOT_FOUND, "User Not Found");
-        if(request.getAmount() < 0)
+        if (request.getAmount() < 0)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid amount");
-        if(!userServices.updateBalance(account.getUsername(), request.getAmount()))
+        if (!userServices.updateBalance(account.getUsername(), request.getAmount()))
             return new ResponseEntity<>("Failed to update balance", HttpStatus.BAD_REQUEST
             );
         return new ResponseEntity<>("Balance is updated successfully", HttpStatus.OK);
     }
 
+
+    /**
+     * Retrieves the current balance of a user's account.
+     *
+     * @param authHeader The authorization header containing the JWT token.
+     * @return ResponseEntity containing the current balance.
+     * @throws GeneralException If there is an issue with retrieving the balance or handling the token.
+     */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Balance is  updated successfully"),
             @ApiResponse(responseCode = "404", description = "User Not Found")
 
     })
     @GetMapping("/get-balance")
-    public ResponseEntity<?> getBalance( @RequestHeader("Authorization") String authHeader) throws GeneralException {
+    public ResponseEntity<?> getBalance(@RequestHeader("Authorization") String authHeader) throws GeneralException {
         String token = authHeader.substring(7);
         String tokenUsername = jwtTokenUtil.getUsernameFromToken(token);
-       Account account = userServices.getUserByUsername(tokenUsername);
+        Account account = userServices.getUserByUsername(tokenUsername);
         Map<String, Object> response = new HashMap<>();
         response.put("current_balance", account.getWalletBalance());
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping("/get-all-users")
-    public ResponseEntity<?> getAllUsers() throws GeneralException {
-        return new ResponseEntity<>(userServices.getAllUsers(), HttpStatus.OK);
     }
 }
