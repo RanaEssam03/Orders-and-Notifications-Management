@@ -15,7 +15,6 @@ public class Account {
     /**
      * The password associated with the account. For security reasons, it is not shown in clear text.
      */
-    @JsonIgnore
     @Schema(example = "12345$")
     private String password;
 

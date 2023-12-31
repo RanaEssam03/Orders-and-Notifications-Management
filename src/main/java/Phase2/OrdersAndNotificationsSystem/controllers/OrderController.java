@@ -174,11 +174,18 @@ public class OrderController {
     public Optional<Order> getOrder(@PathVariable("id") Integer id) throws GeneralException {
 
         Optional<Order> order = simpleOrderServices.getOrder(id);
-        if (order.isEmpty())
-            throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
+        if (order.isEmpty()) {
 
-        return order;
+            if (order.isEmpty()) {
+                throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid order id");
+            }
+        }
+        Order o = order.get() instanceof CompoundOrder ? new CompoundOrder(order.get()) : new SimpleOrder(order.get());
+
+        return Optional.of(o);
+
     }
+
 
     /**
      * Cancels a specific order by ID.
