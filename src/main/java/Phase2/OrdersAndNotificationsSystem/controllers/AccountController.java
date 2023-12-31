@@ -51,7 +51,6 @@ public class AccountController {
 
     })
     public ResponseEntity<LoginResponse> login(@RequestBody Credentials credentials) throws GeneralException {
-
         Account account = userServices.verifyUser(credentials);
         if (userServices.verifyUser(credentials) != null) {
             String token = jwtTokenUtil.generateToken(account.getUsername());

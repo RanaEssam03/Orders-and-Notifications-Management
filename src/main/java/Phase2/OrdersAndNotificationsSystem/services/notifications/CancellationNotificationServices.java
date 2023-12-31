@@ -6,7 +6,6 @@ import Phase2.OrdersAndNotificationsSystem.repositories.implementation.Notificat
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class CancellationNotificationServices extends NotificationServices{
     }
 
     public CancellationNotificationServices(NotificationsRepository notificationsRepository) {
-        super(notificationsRepository);
+//        super(notificationsRepository);
         MessageChannel messageChannel = new EmailChannel();
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();

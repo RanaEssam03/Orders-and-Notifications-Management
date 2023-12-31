@@ -10,7 +10,6 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -20,14 +19,12 @@ public abstract class NotificationServices {
     protected NotificationsRepository notificationsRepository;
     @Getter
     MessageChannel messageChannel;
-    ArrayList<String> placeholdersModels = new ArrayList<>();
-
 
     protected abstract String createMessage(Order order);
 
-    public NotificationServices( NotificationsRepository notificationsRepository) {
-        this.notificationsRepository = notificationsRepository;
-    }
+//    public NotificationServices(NotificationsRepository notificationsRepository) {
+//        this.notificationsRepository = notificationsRepository;
+//    }
 
     public void createNotificationServicesChannel(@Qualifier(value = "SMSChannel") MessageChannel messageChannel) {
         this.messageChannel = messageChannel;

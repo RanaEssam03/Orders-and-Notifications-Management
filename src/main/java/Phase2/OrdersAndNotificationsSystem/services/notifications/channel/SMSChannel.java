@@ -1,4 +1,5 @@
 package Phase2.OrdersAndNotificationsSystem.services.notifications.channel;
+
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
 import Phase2.OrdersAndNotificationsSystem.models.NotificationTypes;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
@@ -10,9 +11,6 @@ import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.sms
 
 @Service
 public class SMSChannel extends BaseChannelDecorator {
-
-
-
     // Acts as a constructor for the decorator
     public void createSMSChannel(@Qualifier(value = "SMSChannel") MessageChannel messageChannel) {
         this.messageChannel = messageChannel;
@@ -38,11 +36,11 @@ public class SMSChannel extends BaseChannelDecorator {
                 messageChannel.sendMessage(notification);
                 throw new GeneralException(HttpStatus.NOT_FOUND, "Invalid phone number associated with this account, failed to send SMS!");
             }
-            else
+            else {
                 return NotificationTypes.SMS;
+            }
         }
         return NotificationTypes.SMS;
-
     }
 
     @Override
