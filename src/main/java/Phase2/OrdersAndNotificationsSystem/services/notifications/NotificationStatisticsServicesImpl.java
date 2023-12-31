@@ -20,21 +20,27 @@ public class NotificationStatisticsServicesImpl implements NotificationStatistic
         Map<String, Integer> shipmentCount = notificationsRepository.getShipmentCounter();
         Map<String, Integer> cancellationCount = notificationsRepository.getCancellationCounter();
         Map<String, Integer> placementCount = notificationsRepository.getConfirmationCounter();
-        int shipment ;
-        if(shipmentCount.isEmpty())
+        int shipment;
+        if(shipmentCount.isEmpty()) {
             shipment = 0;
-        else
+        }
+        else {
             shipment = Collections.max(notificationsRepository.getShipmentCounter().entrySet(), Map.Entry.comparingByValue()).getValue();
-        int cancellation ;
-        if(cancellationCount.isEmpty())
+        }
+        int cancellation;
+        if(cancellationCount.isEmpty()) {
             cancellation = 0;
-        else
+        }
+        else {
             cancellation = Collections.max(notificationsRepository.getCancellationCounter().entrySet(), Map.Entry.comparingByValue()).getValue();
-        int placement ;
-        if(placementCount.isEmpty())
+        }
+        int placement;
+        if(placementCount.isEmpty()) {
             placement = 0;
-        else
+        }
+        else {
             placement = Collections.max(notificationsRepository.getConfirmationCounter().entrySet(), Map.Entry.comparingByValue()).getValue();
+        }
         int max = Math.max(shipment, Math.max(cancellation, placement));
         if (max == shipment) {
             for (Map.Entry<String,Integer> entry : shipmentCount.entrySet()){
@@ -62,20 +68,22 @@ public class NotificationStatisticsServicesImpl implements NotificationStatistic
 
     @Override
     public String getMostNotifiedUser() throws GeneralException {
-
         int smsCount = 0;
-        if(!Data.smsStatistics.isEmpty())
+        if(!Data.smsStatistics.isEmpty()) {
             smsCount = Collections.max(Data.smsStatistics.entrySet(), Map.Entry.comparingByValue()).getValue();
+        }
         int emailCount = 0;
-        if(!Data.emailStatistics.isEmpty())
+        if(!Data.emailStatistics.isEmpty()) {
             emailCount = Collections.max(Data.emailStatistics.entrySet(), Map.Entry.comparingByValue()).getValue();
-
-        if(smsCount == 0 && emailCount == 0)
-           throw new GeneralException(HttpStatus.BAD_REQUEST, "No notifications sent yet");
-
-        if (smsCount > emailCount)
+        }
+        if(smsCount == 0 && emailCount == 0) {
+            throw new GeneralException(HttpStatus.BAD_REQUEST, "No notifications sent yet");
+        }
+        if (smsCount > emailCount) {
             return Collections.max(Data.smsStatistics.entrySet(), Map.Entry.comparingByValue()).getKey();
-        else
+        }
+        else {
             return Collections.max(Data.emailStatistics.entrySet(), Map.Entry.comparingByValue()).getKey();
+        }
     }
 }

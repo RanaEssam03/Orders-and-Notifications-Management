@@ -23,7 +23,7 @@ public class ShipmentNotificationServices extends NotificationServices{
     }
     // TODO
     public ShipmentNotificationServices( NotificationsRepository notificationsRepository) {
-        super( notificationsRepository);
+//        super( notificationsRepository);
         MessageChannel messageChannel = new EmailChannel();
         ((EmailChannel) messageChannel).createEmailChannel(new SMSChannel());
         super.createNotificationServicesChannel(messageChannel);

@@ -11,12 +11,10 @@ import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.ema
 
 @Service
 public class EmailChannel extends BaseChannelDecorator {
-
-
-
     public void createEmailChannel(@Qualifier(value = "EmailChannel") MessageChannel messageChannel) {
         this.messageChannel = messageChannel;
     }
+
     @Override
     public NotificationTypes sendMessage(Notification notification) throws GeneralException {
         if (verifyContact(notification.getOrder().getAccount().getEmail())) {

@@ -24,7 +24,7 @@ public class PlacementNotificationServices extends NotificationServices {
     }
 
     public PlacementNotificationServices( NotificationsRepository notificationsRepository) {
-        super( notificationsRepository);
+//        super( notificationsRepository);
         MessageChannel messageChannel = new EmailChannel();
         super.createNotificationServicesChannel(messageChannel);
         initializeMap();
