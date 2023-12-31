@@ -22,7 +22,7 @@ public class CancellationNotificationServices extends NotificationServices{
         content.put("French", "Cher %s, nous sommes désolés que vous ayez dû annuler votre commande de pièce d'identité : %s :( " +
                 "nous avons hâte de vous revoir bientôt :D");
     }
-    // TODO
+
     public CancellationNotificationServices(NotificationsRepository notificationsRepository) {
         super(notificationsRepository);
         MessageChannel messageChannel = new EmailChannel();
