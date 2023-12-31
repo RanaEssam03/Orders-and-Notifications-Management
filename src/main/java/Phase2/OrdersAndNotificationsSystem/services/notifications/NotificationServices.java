@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Service
 public abstract class NotificationServices {
@@ -49,6 +50,6 @@ public abstract class NotificationServices {
         return notificationDTOS;
     }
 
-    public abstract Integer getCount();
+    public abstract Map<String, Integer> getCount();
 
 }

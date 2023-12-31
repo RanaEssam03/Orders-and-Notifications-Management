@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompoundOrderServiceImpl implements OrderServices {
+public class CompoundOrderServiceImpl extends OrderServices {
 
 
     @Autowired
@@ -42,7 +42,7 @@ public class CompoundOrderServiceImpl implements OrderServices {
 
     NotificationServices cancellationNotificationServices;
 
-    int maxDifference = 5; // in minutes
+    int maxDifference = 5; // in minutes for cancellation
 
     public CompoundOrderServiceImpl(PlacementNotificationServices placementNotificationServices, ShipmentNotificationServices shipmentNotificationServices, CancellationNotificationServices cancellationNotificationServices) {
         this.placementNotificationServices = placementNotificationServices;
@@ -52,6 +52,21 @@ public class CompoundOrderServiceImpl implements OrderServices {
 
 
     @Override
+    public Order addOrder(Order order) throws GeneralException {
+
+        enoughBalance(order);
+        order.calculateTotalFee();
+        for (Product product : (order).getProducts()) {
+            productServices.reduceProductQuantity(product, 1);
+        }
+        order.setStatus("Placed");
+        Order order1 = orderRepo.addOrder(order);
+        accountServices.deduct(order1.getAccount(), order1.getPrice());
+        placementNotificationServices.sendMessage(order1);
+        return order1;
+    }
+
+    @Override
     public boolean cancelOrder(Order order) throws GeneralException {
 
         if (order == null)
@@ -59,19 +74,17 @@ public class CompoundOrderServiceImpl implements OrderServices {
         else {
             ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
 
-            LocalDateTime now = LocalDateTime.now();
-            Duration duration = Duration.between(order.getDate(), now);
-            if (duration.toMinutes() > maxDifference)
-                throw new GeneralException(HttpStatus.BAD_REQUEST, "Order can't be cancelled after 5 minute of confirming it");
-            if(order.getStatus().equals("Cancelled"))
+            accountServices.refund(order.getAccount(), order.getPrice() + order.getShippingFee());
+
+            confirmCancellationTime(order, "Placement or Confirming ");
+            if (order.getStatus().equals("Cancelled"))
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
 
             for (Order o : orders) {
                 if (o.getStatus().equals("Cancelled")) {
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
                 }
-
-                accountServices.refund(o.getAccount(), o.getPrice());
+                accountServices.refund(o.getAccount(), o.getPrice() + o.getShippingFee());
                 for (Product p : ((SimpleOrder) o).getProducts()) {
                     productServices.increaseProductQuantity(p, 1);
                 }
@@ -81,46 +94,67 @@ public class CompoundOrderServiceImpl implements OrderServices {
 
             cancellationNotificationServices.sendMessage(order);
             orderRepo.cancelOrder(order);
+
+            orderRepo.cancelOrder(order);
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public Optional<Order> getOrder(int orderID) throws GeneralException {
-      return orderRepo.getOrder(orderID);
+        return orderRepo.getOrder(orderID);
     }
+
     @Override
     public Order confirmOrder(Order order) throws GeneralException {
         if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
-            double total = order.calculateTotalFee();
             ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
-            Double shippingFee = 30.0 / orders.size();
-            if(order.getStatus().equals("Confirmed"))
+            Double shippingFee = 30.0 / (orders.size() + 1);
+            if (order.getAccount().getWalletBalance() < shippingFee)
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + order.getAccount().getUsername() + " to confirm the order");
+            order.setShippingFee(shippingFee);
+            accountServices.deduct(order.getAccount(), shippingFee);
+            if (order.getStatus().equals("Confirmed"))
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already confirmed");
-            if(order.getStatus().equals("Cancelled"))
+            if (order.getStatus().equals("Cancelled"))
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
 
             for (Order currOrder : orders) {
                 if (shippingFee > currOrder.getAccount().getWalletBalance())
-                    throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + shippingFee.toString() + " to confirm the order");
+                    throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + currOrder.getAccount().getUsername() + " to confirm the order");
                 else {
                     accountServices.deduct(currOrder.getAccount(), shippingFee);
                     currOrder.setStatus("Confirmed");
-                    currOrder.setPrice(currOrder.getPrice() + shippingFee);
+                    currOrder.setShippingFee(shippingFee);
+
                     shipmentNotificationServices.sendMessage(currOrder);
                 }
-
             }
         }
-        return orderRepo.addOrder(order);
+        order.setStatus("Confirmed");
+        return order;
     }
 
+
+
+
     @Override
-    public List<Order> getAllOrders() throws GeneralException {
-        return null;
+    public void cancelShipment(Order order) throws GeneralException {
+
+        confirmCancellationTime(order, "confirming");
+        order.setStatus("Placed");
+        double shipmentFee = order.getShippingFee();
+        accountServices.refund(order.getAccount(), shipmentFee);
+        order.setShippingFee(0.0);
+        for (Order currentOrder : ((CompoundOrder) order).getOrders()) {
+            accountServices.refund(currentOrder.getAccount(), shipmentFee);
+            currentOrder.setShippingFee(0.0);
+            currentOrder.setStatus("Placed");
+        }
+
     }
 
 

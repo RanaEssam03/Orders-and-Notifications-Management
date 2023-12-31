@@ -6,6 +6,8 @@ import Phase2.OrdersAndNotificationsSystem.repositories.implementation.Notificat
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.EmailChannel;
 import Phase2.OrdersAndNotificationsSystem.services.notifications.channel.MessageChannel;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,13 +31,25 @@ public class PlacementNotificationServices extends NotificationServices {
     }
 
     @Override
-    public Integer getCount() {
-        return notificationsRepository.getConfirmationCounter();
+    public Map<String, Integer> getCount() {
+        Map<String, Integer> result = new HashMap<>();
+        result.put(Collections.max(notificationsRepository.getConfirmationCounter().entrySet(), Map.Entry.comparingByValue()).getKey(),
+                Collections.max(notificationsRepository.getConfirmationCounter().entrySet(), Map.Entry.comparingByValue()).getValue());
+        return result;
     }
 
     @Override
     protected String createMessage(Order order) {
-        NotificationRepositoryImpl.setConfirmationCounter(notificationsRepository.getConfirmationCounter()+1);
+        Map<String, Integer> newCounter = notificationsRepository.getConfirmationCounter();
+        String lang = order.getAccount().getChosenLanguage();
+        Integer count = newCounter.get(lang);
+        if (count == null){
+            newCounter.put(lang, 1);
+        }
+        else{
+            newCounter.replace(lang, newCounter.get(lang), newCounter.get(lang)+1);
+        }
+        NotificationRepositoryImpl.setConfirmationCounter(newCounter);
         return String.format(content.get(order.getAccount().getChosenLanguage()), order.getAccount().getUsername(), order.getId());
     }
 }

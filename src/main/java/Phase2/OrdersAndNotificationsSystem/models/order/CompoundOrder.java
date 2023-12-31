@@ -44,16 +44,10 @@ public class CompoundOrder extends Order {
      */
     public Double calculateTotalFee() throws GeneralException {
         double totalPrice = 0.0;
-
-        // Add a fixed fee per order
-        totalPrice += ((double)30/(orders.size()));
-        for (Order order : orders){
-            totalPrice += order.getPrice();
+        for(Product product : products){
+            totalPrice += product.getPrice();
         }
-
-        // Set the total price for the compound order
-        this.setPrice(totalPrice);
-
+        price = totalPrice;
         return totalPrice;
     }
 }

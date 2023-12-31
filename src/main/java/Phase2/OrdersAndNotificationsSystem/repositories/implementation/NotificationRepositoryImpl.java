@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.messagesQueue;
 
@@ -15,11 +17,11 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
 
     static int idCounter = 0;
     @Setter
-    static int shipmentCounter = 0;
+    static Map<String, Integer> shipmentCounter = new HashMap<>();
     @Setter
-    static int cancellationCounter = 0;
+    static Map<String, Integer> cancellationCounter = new HashMap<>();
     @Setter
-    static int confirmationCounter = 0;
+    static Map<String, Integer> confirmationCounter = new HashMap<>();
     @Override
     public Notification add(Notification notification) {
         notification.setId(++idCounter);
@@ -44,16 +46,16 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
     }
 
     @Override
-    public int getConfirmationCounter() {
+    public Map<String, Integer> getConfirmationCounter() {
         return confirmationCounter;
     }
 
     @Override
-    public int getShipmentCounter() {
+    public Map<String, Integer> getShipmentCounter() {
         return shipmentCounter;
     }
     @Override
-    public int getCancellationCounter() {
+    public Map<String, Integer> getCancellationCounter() {
         return cancellationCounter;
     }
 

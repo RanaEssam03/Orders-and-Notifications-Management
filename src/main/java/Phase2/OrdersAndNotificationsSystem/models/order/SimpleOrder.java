@@ -10,10 +10,6 @@ import java.util.ArrayList;
 
 @Data
 public class SimpleOrder extends Order {
-    /**
-     * The list of products included in the simple order.
-     */
-    ArrayList<Product> products = new ArrayList<>();
 
     /**
      * Constructs a simple order with the same attributes as the provided order.
@@ -23,9 +19,7 @@ public class SimpleOrder extends Order {
      */
     public SimpleOrder(Order order) {
         super(order);
-        for (Product p : ((SimpleOrder) order).getProducts()){
-            this.products.add(p);
-        }
+
     }
 
     /**

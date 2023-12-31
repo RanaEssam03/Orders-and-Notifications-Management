@@ -1,7 +1,7 @@
 package Phase2.OrdersAndNotificationsSystem.repositories;
 
 import Phase2.OrdersAndNotificationsSystem.models.Notification;
-
+import java.util.Map;
 import java.util.ArrayList;
 
 
@@ -11,8 +11,8 @@ public interface NotificationsRepository {
     public ArrayList<Notification> getAll();
 
     public boolean delete(Notification message);
-    public int getCancellationCounter();
-    public int getConfirmationCounter();
-    public int getShipmentCounter();
+    public Map<String, Integer> getCancellationCounter();
+    public Map<String, Integer> getConfirmationCounter();
+    public Map<String, Integer> getShipmentCounter();
     public ArrayList<Notification> getAllNotifications();
 }

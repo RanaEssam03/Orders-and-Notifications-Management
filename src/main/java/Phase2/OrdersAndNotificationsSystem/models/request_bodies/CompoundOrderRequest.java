@@ -12,6 +12,8 @@ import java.util.Map;
 public class CompoundOrderRequest {
 
     // This is the ID of the user who is making the order request
-    Map<String,Integer > orders = new HashMap();
+    Map<String,Integer > otherOrders = new HashMap();
+
+    ArrayList<Integer> productsIDs = new ArrayList<>();
 
 }

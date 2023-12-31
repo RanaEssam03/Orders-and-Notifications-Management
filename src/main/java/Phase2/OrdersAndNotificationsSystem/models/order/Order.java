@@ -44,6 +44,9 @@ public abstract class Order {
      */
     @Schema(example = "100.0")
     Double price;
+    ArrayList<Product> products = new ArrayList<>();
+    Double shippingFee = 0.0;
+
 
     /**
      * Calculates the total fee for the order.
@@ -71,5 +74,7 @@ public abstract class Order {
         this.status = order.getStatus();
         this.date = order.getDate();
         this.price = order.getPrice();
+        this.products = order.getProducts();
+        this.shippingFee = order.getShippingFee();
     }
 }
