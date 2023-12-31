@@ -6,6 +6,8 @@ import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 import Phase2.OrdersAndNotificationsSystem.repositories.AccountRepo;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
+import java.util.List;
+
 import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.accounts;
 
 @Repository
@@ -23,7 +25,11 @@ public class AccountRepositoryImpl implements AccountRepo {
 
     @Override
     public ArrayList<Account> getAllUsers() {
-        return accounts;
+        ArrayList<Account> users = new ArrayList<>();
+        for (Account user : accounts) {
+            users.add(new Account(user));
+        }
+        return users;
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.categories;
 import static Phase2.OrdersAndNotificationsSystem.repositories.database.Data.products;
 
 @Repository
@@ -16,26 +17,21 @@ public class ProductRepoImpl implements ProductRepo {
 
 
     ProductRepoImpl(){
-        Category category = new Category();
-        category.setName("Electronics");
+        Category category1 = new Category("Electronics");
 
+        categories.add(category1);
 
+       Category category2 = new Category("Clothing");
+        categories.add(category2);
 
-        Category category1 = new Category();
-        category1.setName("Clothing");
+     Category   category3 = new Category("Furniture");
+        categories.add(category3);
 
+        Category category4 = new Category("Grocery");
+        categories.add(category4);
 
-        Category category2 = new Category();
-        category2.setName("Furniture");
-
-
-        Category category3 = new Category();
-        category3.setName("Grocery");
-
-
-       Category category4 = new Category();
-        category4.setName("Books");
-
+       Category category = new Category("Sports");
+        categories.add(category);
 
 
 

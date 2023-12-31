@@ -20,9 +20,6 @@ public class Category {
         this.name = name;
         id = cnt++;
     }
-    public Category(){
-        id = cnt++;
 
-    };
 
 }

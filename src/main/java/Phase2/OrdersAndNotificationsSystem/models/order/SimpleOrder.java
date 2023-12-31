@@ -12,6 +12,17 @@ import java.util.ArrayList;
 public class SimpleOrder extends Order {
     ArrayList<Product> products = new ArrayList<>();
 
+    public SimpleOrder(Order order) {
+        super(order);
+        for (Product p : ((SimpleOrder) order).getProducts()){
+            this.products.add(p);
+        }
+    }
+
+   public SimpleOrder() {
+        super();
+    }
+
 
     @Override
     public Double calculateTotalFee() throws GeneralException {

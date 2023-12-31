@@ -4,6 +4,8 @@ import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.Account;
 import Phase2.OrdersAndNotificationsSystem.models.request_bodies.Credentials;
 
+import java.util.List;
+
 public interface AccountServices {
 
 
@@ -17,5 +19,7 @@ public interface AccountServices {
     public boolean refund(Account account, Double amount) throws GeneralException;
 
     public boolean deduct(Account account, Double amount) throws GeneralException;
+
+    public List<Account> getAllUsers() throws GeneralException;
 
 }

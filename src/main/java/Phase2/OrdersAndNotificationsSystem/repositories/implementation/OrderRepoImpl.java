@@ -3,6 +3,7 @@ package Phase2.OrdersAndNotificationsSystem.repositories.implementation;
 import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
 import org.springframework.stereotype.Repository;
 
@@ -32,14 +33,10 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public Optional<Order> getOrder(int orderID) {
-        for (Order order : orders){
+    public Optional<Order> getOrder (int orderID) {
+        for (Order order : orders) {
             if (order.getId() == orderID) {
-                Order o = order;
-                o.getAccount().setPassword("*********");
-                if(o instanceof CompoundOrder)
-                    ((CompoundOrder) o).getOrders().forEach(order1 -> order1.getAccount().setPassword("*********"));
-                return Optional.of(o);
+                return Optional.of(order);
             }
         }
         return Optional.empty();

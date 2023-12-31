@@ -30,6 +30,17 @@ public class Account  {
         this.walletBalance=walletBalance;
         this.chosenLanguage = language;
     }
+    public Account(Account account) {
+        this.username=account.getUsername();
+        this.password= "********";
+        this.email=account.getEmail();
+        this.phoneNumber=account.getPhoneNumber();
+        this.address=account.getAddress();
+        this.walletBalance=account.getWalletBalance();
+        this.chosenLanguage = account.getChosenLanguage();
+    }
+    public Account() {
+    }
 
 
 }

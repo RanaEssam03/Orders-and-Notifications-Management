@@ -3,6 +3,7 @@ package Phase2.OrdersAndNotificationsSystem.services.order;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface OrderServices {
@@ -17,6 +18,8 @@ public interface OrderServices {
     Optional<Order> getOrder(int orderID) throws GeneralException;
 
     Order confirmOrder(Order order) throws GeneralException;
+
+    List<Order> getAllOrders() throws GeneralException;
 
 
 }

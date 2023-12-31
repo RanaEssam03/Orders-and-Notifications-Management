@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountServicesImp implements AccountServices {
@@ -78,6 +79,11 @@ public class AccountServicesImp implements AccountServices {
             throw new GeneralException(HttpStatus.NOT_ACCEPTABLE, "Insufficient balance");
         account.setWalletBalance(account.getWalletBalance() - amount);
         return true;
+    }
+
+    @Override
+    public List<Account> getAllUsers() throws GeneralException {
+        return userRepository.getAllUsers();
     }
 
 

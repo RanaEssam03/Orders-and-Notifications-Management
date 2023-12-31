@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +34,6 @@ public class CompoundOrderServiceImpl implements OrderServices {
 
     @Autowired
     OrderRepo orderRepo;
-
 
     NotificationServices placementNotificationServices;
 
@@ -96,23 +96,31 @@ public class CompoundOrderServiceImpl implements OrderServices {
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
             double total = order.calculateTotalFee();
-            order.setPrice(total+30);
             ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
             Double shippingFee = 30.0 / orders.size();
+            if(order.getStatus().equals("Confirmed"))
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already confirmed");
+            if(order.getStatus().equals("Cancelled"))
+                throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
+
             for (Order currOrder : orders) {
                 if (shippingFee > currOrder.getAccount().getWalletBalance())
-                    throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + currOrder.getAccount().getUsername() + " to confirm the order");
+                    throw new GeneralException(HttpStatus.BAD_REQUEST, "Not enough balance for " + shippingFee.toString() + " to confirm the order");
                 else {
                     accountServices.deduct(currOrder.getAccount(), shippingFee);
                     currOrder.setStatus("Confirmed");
                     currOrder.setPrice(currOrder.getPrice() + shippingFee);
                     shipmentNotificationServices.sendMessage(currOrder);
-
                 }
 
             }
         }
         return orderRepo.addOrder(order);
+    }
+
+    @Override
+    public List<Order> getAllOrders() throws GeneralException {
+        return null;
     }
 
 

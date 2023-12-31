@@ -32,4 +32,12 @@ public abstract class Order {
     Order() {
        this.date = LocalDateTime.now();
     }
+
+    Order(Order order) {
+        this.id = order.getId();
+        this.account = new Account(order.getAccount());
+        this.status = order.getStatus();
+        this.date = order.getDate();
+        this.price = order.getPrice();
+    }
 }

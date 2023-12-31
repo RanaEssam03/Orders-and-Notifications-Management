@@ -97,4 +97,9 @@ public class AccountController {
         response.put("current_balance", account.getWalletBalance());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/get-all-users")
+    public ResponseEntity<?> getAllUsers() throws GeneralException {
+        return new ResponseEntity<>(userServices.getAllUsers(), HttpStatus.OK);
+    }
 }
