@@ -132,6 +132,7 @@ public class OrderController {
     /**
      * Places a compound order for a user.
      *
+     * @param id      The order details provided in the request body.
      * @param authHeader The authorization header containing the JWT token.
      * @return An OrderResponse containing the ID of the confirmed compound order.
      * @throws GeneralException If there is an issue with placing the compound order or handling the token.
