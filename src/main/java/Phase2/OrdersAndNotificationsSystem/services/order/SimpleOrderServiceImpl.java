@@ -1,6 +1,7 @@
 package Phase2.OrdersAndNotificationsSystem.services.order;
 import Phase2.OrdersAndNotificationsSystem.models.Product;
 import Phase2.OrdersAndNotificationsSystem.models.exceptions.GeneralException;
+import Phase2.OrdersAndNotificationsSystem.models.order.CompoundOrder;
 import Phase2.OrdersAndNotificationsSystem.models.order.Order;
 import Phase2.OrdersAndNotificationsSystem.models.order.SimpleOrder;
 import Phase2.OrdersAndNotificationsSystem.repositories.OrderRepo;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SimpleOrderServiceImpl implements OrderServices {
+public class SimpleOrderServiceImpl extends OrderServices {
 
     @Autowired
     OrderRepo orderRepo;
@@ -31,7 +32,6 @@ public class SimpleOrderServiceImpl implements OrderServices {
     @Autowired
     ProductServices productServices;
 
-    int maxDifference = 5; // in minutes
 
     NotificationServices placementNotificationServices;
 
@@ -62,7 +62,7 @@ public class SimpleOrderServiceImpl implements OrderServices {
         if (order == null)
             throw new GeneralException(HttpStatus.BAD_REQUEST, "Invalid order");
         else {
-            for (Product product : ((SimpleOrder) order).getProducts()) {
+            for (Product product : (order).getProducts()) {
                 productServices.reduceProductQuantity(product, 1);
             }
 
@@ -86,17 +86,11 @@ public class SimpleOrderServiceImpl implements OrderServices {
             if (order.getStatus().equals("Cancelled")) {
                 throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
             }
+            confirmCancellationTime(order, "Placement or Confirming ");
 
-            LocalDateTime now = LocalDateTime.now();
-
-            Duration duration = Duration.between(order.getDate(), now);
-
-
-            if (duration.toMinutes() > maxDifference)
-                throw new GeneralException(HttpStatus.BAD_REQUEST, "Can't cancel order after 5 minutes");
 
             order.setStatus("Cancelled");
-            accountServices.refund(order.getAccount(), order.getPrice());
+            accountServices.refund(order.getAccount(), order.getPrice()+ order.getShippingFee());
             for (Product product : ((SimpleOrder) order).getProducts()) {
                 productServices.increaseProductQuantity(product, 1);
             }
@@ -129,7 +123,7 @@ public class SimpleOrderServiceImpl implements OrderServices {
                 if(order.getStatus().equals("Cancelled"))
                     throw new GeneralException(HttpStatus.BAD_REQUEST, "Order is already cancelled");
                 accountServices.deduct(order.getAccount(), 30.0);
-                order.setPrice(order.getPrice() + 30);
+                order.setShippingFee(30.0);
                 order.setStatus("Confirmed");
                 shipmentNotificationServices.sendMessage(order);
             }
@@ -137,27 +131,20 @@ public class SimpleOrderServiceImpl implements OrderServices {
         return order;
     }
 
-    @Override
+    @Override // TODO
     public List<Order> getAllOrders() throws GeneralException {
         return null;
     }
 
+    @Override
+    public void cancelShipment(Order order) throws GeneralException {
+        confirmCancellationTime(order, "confirming");
+        order.setStatus("Placed");
+        double shipmentFee = order.getShippingFee();
+        accountServices.refund(order.getAccount(), shipmentFee);
+        order.setShippingFee(0.0);
 
-    /**
-     * Check if the user has enough balance to place the order or not
-     *
-     * @param order the order to be placed
-     * @throws GeneralException if the user doesn't have enough balance
-     */
-    void enoughBalance(Order order) throws GeneralException {
-        double totalFee = order.calculateTotalFee();
-        if (order instanceof SimpleOrder) {
-            if (totalFee > order.getAccount().getWalletBalance()) {
-                String message = "Not enough balance for " + order.getAccount().getUsername();
-                throw new GeneralException(HttpStatus.BAD_REQUEST, message);
-            }
-            order.setPrice(totalFee);
-        }
     }
+
 
 }
