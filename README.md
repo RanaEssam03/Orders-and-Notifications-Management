@@ -3,6 +3,9 @@
 ## Description
 This project is a simple Orders and Notifications Management System. It is a RESTful API that allows users to create orders and send notifications to the users who created the orders. The API is built using Spring Boot and uses in-memory  database to store the data. The API is secured using  JWT tokens. The API is documented using Swagger. The API is tested using Postman.
 
+## Documentation & Postman collections 
+* https://documenter.getpostman.com/view/26527995/2s9YsDkah8
+  
 ## Requirements
 * Java 17
 * Maven 3.8.2
@@ -15,7 +18,7 @@ This project is a simple Orders and Notifications Management System. It is a RES
 * Run the application
 * Open Postman and import the collection from the project folder
 * Run the collection
-* You can also use Swagger to check the API documentation by going to http://localhost:8080/swagger-ui.html 
+* You can also use Swagger to check the API documentation by going to http://localhost:8080/swagger-ui.html after running the server
 
 
 ## Requests Examples
@@ -53,6 +56,16 @@ to get the following response:
 }
 ```
 save the token to use it in the next requests by adding it to the header of the request.
+
+
+## Authors
+* [Rana Essam](mailto:ranaessam03@gmail.com)
+* [Nour Muhammed](mailto:nourmuhammad835@gmail.com)
+* [Noor Eyad]( mailto:nooreyadd39@gmail.com)
+* [Mariam Haitham](maito:username@gmail.com)
+
+
+
 
 
 
