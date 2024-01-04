@@ -62,7 +62,7 @@ save the token to use it in the next requests by adding it to the header of the 
 * [Rana Essam](mailto:ranaessam03@gmail.com)
 * [Nour Muhammed](mailto:nourmuhammad835@gmail.com)
 * [Noor Eyad]( mailto:nooreyadd39@gmail.com)
-* [Mariam Haitham](maito:username@gmail.com)
+* [Mariam Haitham](mailto:username@gmail.com)
 
 
 
