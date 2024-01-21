@@ -31,11 +31,11 @@ This project is a simple Orders and Notifications Management System. It is a RES
     "email": "ranaessam03@gmail.com",
     "phoneNumber": "01111111111",
     "address":  {
-    "city": "string",
-    "region": "string",
-    "street": "string",
-    "apartmentNum": 0
-  },
+              "city": "string",
+              "region": "string",
+              "street": "string",
+              "apartmentNum": 0
+      },
     "walletBalance": 1000.0
 }
 
